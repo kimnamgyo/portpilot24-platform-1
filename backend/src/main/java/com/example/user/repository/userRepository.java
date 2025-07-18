@@ -1,4 +1,4 @@
-package com.example.repository;
+package com.example.user.repository;
 
 public class userRepository {
     
