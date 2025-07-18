@@ -1,4 +1,4 @@
-package com.example.user.dto;
+package com.example.comment.dto;
 
 public class CommentRequestDto {
     private String content;

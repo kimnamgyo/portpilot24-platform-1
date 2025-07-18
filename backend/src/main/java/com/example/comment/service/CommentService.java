@@ -1,9 +1,11 @@
-package com.example.comment;
+package com.example.comment.service;
 
 import com.example.board.Post;
 import com.example.board.PostRepository;
+import com.example.comment.domain.Comment;
+import com.example.comment.domain.CommentRepository;
 import com.example.user.User;
-import com.example.comment.CommentRepository;
+
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

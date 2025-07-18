@@ -1,6 +1,8 @@
-package com.example.comment;
+package com.example.comment.repository;
 
 import com.example.board.Post;
+import com.example.comment.domain.Comment;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

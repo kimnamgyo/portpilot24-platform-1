@@ -1,4 +1,4 @@
-package com.example.comment;
+package com.example.comment.domain;
 
 import com.example.board.Post;
 import com.example.user.User;

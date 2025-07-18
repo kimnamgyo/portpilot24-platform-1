@@ -1,10 +1,11 @@
-package com.example.user.dto;
+package com.example.comment.dto;
 
-import com.example.comment.Comment;
 import java.time.LocalDateTime;
 
+import com.example.comment.domain.Comment;
+
 public class CommentResponseDto {
-    
+
     private Long id;
     private String content;
     private String authorName;

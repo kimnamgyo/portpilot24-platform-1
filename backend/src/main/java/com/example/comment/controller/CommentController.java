@@ -1,8 +1,10 @@
-package com.example.comment;
+package com.example.comment.controller;
 
+import com.example.comment.domain.Comment;
+import com.example.comment.dto.CommentRequestDto;
 import com.example.comment.dto.CommentResponseDto;
+import com.example.comment.service.CommentService;
 import com.example.user.User;
-import com.example.user.dto.CommentRequestDto;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
