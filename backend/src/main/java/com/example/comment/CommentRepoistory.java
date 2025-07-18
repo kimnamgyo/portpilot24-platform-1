@@ -1,4 +1,4 @@
-package com.example.user.comment;
+package com.example.comment;
 
 import com.example.board.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
