@@ -1,5 +1,5 @@
 package com.example.user.dto;
 
-public class userDTO {
+public class UserDTO {
     
 }

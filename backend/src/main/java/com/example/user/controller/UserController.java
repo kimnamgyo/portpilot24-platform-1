@@ -1,5 +1,5 @@
 package com.example.user.controller;
 
-public class userController {
+public class UserController {
     
 }
