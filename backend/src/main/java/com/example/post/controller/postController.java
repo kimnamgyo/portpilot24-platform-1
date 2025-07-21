@@ -1,5 +1,6 @@
 package com.example.post.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.post.domain.Post;
+import com.example.post.dto.postDTO;
 import com.example.post.service.postService;
 
 import jakarta.persistence.PostUpdate;
@@ -39,8 +41,8 @@ public class postController {
     
     //게시글등록
     @PostMapping
-    public Post createPost(@RequestBody Post post){
-        return postService.insertPost(post);
+    public void createPost(@RequestBody postDTO postDTO) throws IOException{
+        postService.insertPost(postDTO);
     }
 
     //게시글수정
