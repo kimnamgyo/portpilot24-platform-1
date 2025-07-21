@@ -1,7 +1,7 @@
 package com.example.comment.domain;
 
-import com.example.board.Post;
-import com.example.user.User;
+import com.example.post.domain.Post;
+import com.example.user.domain.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -11,15 +11,15 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long commentId;  // ✅ 댓글 고유 ID
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;  // ✅ 댓글이 속한 게시글
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id")
-    private User author;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User author;  // ✅ 댓글 작성자
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -43,8 +43,8 @@ public class Comment {
     }
 
     // === Getters & Setters ===
-    public Long getId() {
-        return id;
+    public Long getCommentId() {
+        return commentId;
     }
 
     public Post getPost() {
