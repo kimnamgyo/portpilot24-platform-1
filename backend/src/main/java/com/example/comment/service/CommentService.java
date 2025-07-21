@@ -1,11 +1,12 @@
 package com.example.comment.service;
 
-import com.example.post.domain.Post;
+import com.example.post.domain.PostEntity;
 import com.example.post.repository.postRepository;
 import com.example.comment.domain.Comment;
 import com.example.comment.repository.CommentRepository;
 import com.example.user.domain.User;
 
+import com.example.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +17,28 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final postRepository PostRepository;
+    private final UserRepository userRepository;
 
-    public CommentService(CommentRepository commentRepository, postRepository PostRepository) {
+    public CommentService(CommentRepository commentRepository, postRepository PostRepository,
+                          UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.PostRepository = PostRepository;
+        this.userRepository = userRepository;
     }
 
     /**
      * 댓글 작성
      */
     public Comment createComment(Long postId, Long userId, String content) {
-        Post post = PostRepository.findById(postId)
+        PostEntity post = PostRepository.findById(postId)
             .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-        Comment comment = new Comment(post, userId, content);
+        User user = new User();
+
+//        User user = userRepository.findById(userId)
+//            .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+
+        Comment comment = new Comment(post, user, content);
         return commentRepository.save(comment);
     }
 

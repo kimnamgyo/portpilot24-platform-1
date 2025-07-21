@@ -1,6 +1,6 @@
 package com.example.comment.domain;
 
-import com.example.post.domain.Post;
+import com.example.post.domain.PostEntity;
 import com.example.user.domain.User;
 import jakarta.persistence.*;
 
@@ -15,11 +15,11 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "post_id", nullable = false)
-    private Post post;  // ✅ 댓글이 속한 게시글
+    private PostEntity post;  // ✅ 댓글이 속한 게시글
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private Long userId;  // ✅ 댓글 작성자
+    private User user;  // ✅ 댓글 작성자
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -30,9 +30,9 @@ public class Comment {
     // === 생성자 ===
     public Comment() {}
 
-    public Comment(Post post, Long userId, String content) {
+    public Comment(PostEntity post, User user, String content) {
         this.post = post;
-        this.userId = userId;
+        this.user = user;
         this.content = content;
     }
 
@@ -47,7 +47,7 @@ public class Comment {
         return commentId;
     }
 
-    public Post getPost() {
+    public PostEntity getPost() {
         return post;
     }
 
@@ -63,18 +63,18 @@ public class Comment {
         return updatedAt;
     }
     public Long getUserId(){
-        return userId;
+        return this.user.getUserId();
     }
 
-    public void setPost(Post post) {
+    public void setPost(PostEntity post) {
         this.post = post;
     }
 
     public void setContent(String content) {
         this.content = content;
     }
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserId(User user) {
+        this.user = user;
     }
 
 }

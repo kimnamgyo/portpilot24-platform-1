@@ -33,7 +33,7 @@ public class UserDto {
     @Data
     @Builder
     public static class SignupResponse {
-        private Integer id;
+        private Long id;
         private String email;
     }
 
@@ -65,7 +65,7 @@ public class UserDto {
     @Data
     @Builder
     public static class UserInfo {
-        private Integer id;
+        private Long id;
         private String email;
         private String name;
         private String role;
@@ -74,7 +74,7 @@ public class UserDto {
     @Data
     @Builder
     public static class UserListItem {
-        private Integer id;
+        private Long id;
         private String email;
         private String name;
         private User.Role role;

@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.post.domain.PostEntity;
-import com.example.post.dto.*;
 
 import lombok.Data;
 

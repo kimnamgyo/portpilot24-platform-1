@@ -46,7 +46,7 @@ class UserServiceTest {
                 .build();
 
         user = User.builder()
-                .userId(1)
+                .userId(1L)
                 .email("test@example.com")
                 .name("테스트유저")
                 .passwordHash("hashedPassword")
