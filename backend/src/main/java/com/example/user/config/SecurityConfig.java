@@ -37,7 +37,8 @@ public class SecurityConfig {
                                 "/api/users/check-email",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/favicon.ico"
                         ).permitAll()
                         .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "ROOT")
                         .anyRequest().authenticated()
