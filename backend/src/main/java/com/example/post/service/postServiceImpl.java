@@ -36,15 +36,15 @@ public class postServiceImpl implements postService {
             Post post = Post.noFilePost(postDTO);
             postRepository.save(post);
         }else{
-            MultipartFile postFile = postDTO.getPostFile();
+            MultipartFile postedFile = postDTO.getPostFile();
 
-            String originalFilename = postFile.getOriginalFilename();
+            String originalFilename = postedFile.getOriginalFilename();
 
             String savedFileName = System.currentTimeMillis() + "_" + originalFilename;
 
             String savePath = "C:/springboot_img/" + savedFileName;
 
-            postFile.transferTo(new File(savePath));
+            postedFile.transferTo(new File(savePath));
 
             Post post = Post.filePost(postDTO);
 
@@ -64,8 +64,8 @@ public class postServiceImpl implements postService {
         Optional<Post> optionalPostEntity = postRepository.findById(id);
         if (optionalPostEntity.isPresent()) {
             Post post = optionalPostEntity.get();
-            postDTO postDTO = postDTO.toPostDTO(post);
-            return postDTO;
+            postDTO postToDTO = postDTO.toPostDTO(post);
+            return postToDTO;
         } else {
             return null;
         }
