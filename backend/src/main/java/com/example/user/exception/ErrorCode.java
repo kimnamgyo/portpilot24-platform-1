@@ -17,6 +17,9 @@ public enum ErrorCode {
     FORBIDDEN(403, "권한이 없습니다."),
     INVALID_TOKEN(401, "유효하지 않은 토큰입니다."),
     USER_NOT_ACTIVE(403, "사용자가 활성화되지 않았습니다."),
+    CONCURRENT_REQUEST(409, "동시 요청으로 인해 충돌이 발생했습니다. 잠시 후 다시 시도해주세요."),
+    TOKEN_EXPIRED(401, "토큰이 만료되었습니다. 다시 로그인해주세요."),
+    REFRESH_TOKEN_NOT_FOUND(404, "리프레시 토큰을 찾을 수 없습니다."),
 
     // 기타
     INTERNAL_SERVER_ERROR(500, "서버 내부 오류가 발생했습니다."),

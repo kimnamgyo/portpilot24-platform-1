@@ -5,6 +5,7 @@ import com.example.user.domain.User;
 import com.example.user.exception.BusinessException;
 import com.example.user.exception.ErrorCode;
 import com.example.user.repository.UserRepository;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -96,31 +97,38 @@ public class UserService {
 
     @Transactional
     public UserDto.LoginResponse refreshToken(UserDto.RefreshTokenRequest request) {
-        String refreshToken = request.getRefreshToken();
+        try {
+            String refreshToken = request.getRefreshToken();
 
-        if (!jwtUtil.validateToken(refreshToken)) {
-            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+            if (!jwtUtil.validateToken(refreshToken)) {
+                throw new BusinessException(ErrorCode.INVALID_TOKEN);
+            }
+
+            String email = jwtUtil.getUsernameFromToken(refreshToken);
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+            if (!refreshToken.equals(user.getRefreshToken())) {
+                throw new BusinessException(ErrorCode.INVALID_TOKEN);
+            }
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            String newAccessToken = jwtUtil.generateToken(userDetails);
+            String newRefreshToken = jwtUtil.generateRefreshToken(userDetails);
+
+            user.updateRefreshToken(newRefreshToken);
+            userRepository.save(user); // 이 시점에 버전 충돌이 감지될 수 있습니다.
+
+            return UserDto.LoginResponse.builder()
+                    .accessToken(newAccessToken)
+                    .refreshToken(newRefreshToken)
+                    .build();
+        } catch (OptimisticLockException e) { // 또는 ObjectOptimisticLockingFailureException
+            // 여러 요청이 동시에 토큰 재발급을 시도하여 충돌이 발생한 경우
+            log.warn("리프레시 토큰 재발급 중 동시성 충돌 발생: {}", request.getRefreshToken());
+            // 클라이언트에게 재시도 또는 이미 갱신되었을 수 있음을 알리는 에러를 보냅니다.
+            throw new BusinessException(ErrorCode.CONCURRENT_REQUEST);
         }
-
-        String email = jwtUtil.getUsernameFromToken(refreshToken);
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
-
-        if (!refreshToken.equals(user.getRefreshToken())) {
-            throw new BusinessException(ErrorCode.INVALID_TOKEN);
-        }
-
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-        String newAccessToken = jwtUtil.generateToken(userDetails);
-        String newRefreshToken = jwtUtil.generateRefreshToken(userDetails);
-
-        user.updateRefreshToken(newRefreshToken);
-        userRepository.save(user);
-
-        return UserDto.LoginResponse.builder()
-                .accessToken(newAccessToken)
-                .refreshToken(newRefreshToken)
-                .build();
     }
 
     @Transactional
