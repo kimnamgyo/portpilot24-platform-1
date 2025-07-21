@@ -19,7 +19,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User author;  // ✅ 댓글 작성자
+    private Long userId;  // ✅ 댓글 작성자
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -30,9 +30,9 @@ public class Comment {
     // === 생성자 ===
     public Comment() {}
 
-    public Comment(Post post, User author, String content) {
+    public Comment(Post post, Long userId, String content) {
         this.post = post;
-        this.author = author;
+        this.userId = userId;
         this.content = content;
     }
 
@@ -51,10 +51,6 @@ public class Comment {
         return post;
     }
 
-    public User getAuthor() {
-        return author;
-    }
-
     public String getContent() {
         return content;
     }
@@ -66,16 +62,19 @@ public class Comment {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+    public Long getUserId(){
+        return userId;
+    }
 
     public void setPost(Post post) {
         this.post = post;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
     public void setContent(String content) {
         this.content = content;
     }
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
 }

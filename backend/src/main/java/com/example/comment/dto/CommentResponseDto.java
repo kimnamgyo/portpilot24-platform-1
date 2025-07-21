@@ -16,9 +16,7 @@ public class CommentResponseDto {
     public CommentResponseDto(Comment comment, Long currentUserId) {
         this.id = comment.getCommentId();
         this.content = comment.getContent();
-        this.authorEmail = comment.getAuthor().getEmail();      // ✅ 필요에 따라 변경
-        this.authorName = comment.getAuthor().getName();        // ✅ 필요에 따라 추가
-        this.isMine = comment.getAuthor().getUserId().longValue() == currentUserId;
+        this.isMine = comment.getUserId().longValue() == currentUserId;
         this.createdAt = comment.getCreatedAt();
         this.updatedAt = comment.getUpdatedAt();
     }
@@ -30,10 +28,6 @@ public class CommentResponseDto {
 
     public String getContent() {
         return content;
-    }
-
-    public String getAuthorEmail() {
-        return authorEmail;
     }
 
     public boolean isMine() {

@@ -25,11 +25,11 @@ public class CommentService {
     /**
      * 댓글 작성
      */
-    public Comment createComment(Long postId, String content, User user) {
+    public Comment createComment(Long postId, Long userId, String content) {
         Post post = PostRepository.findById(postId)
             .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-        Comment comment = new Comment(post, user, content);
+        Comment comment = new Comment(post, userId, content);
         return commentRepository.save(comment);
     }
 
@@ -48,7 +48,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
             .orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
 
-        if (!comment.getAuthor().getUserId().equals(user.getUserId())) {
+        if (!comment.getUserId().equals(user.getUserId())) {
             throw new SecurityException("댓글 수정 권한이 없습니다.");
         }
 
@@ -62,7 +62,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
             .orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
 
-        if (!comment.getAuthor().getUserId().equals(user.getUserId())) {
+        if (!comment.getUserId().equals(user.getUserId())) {
             throw new SecurityException("댓글 삭제 권한이 없습니다.");
         }
 
