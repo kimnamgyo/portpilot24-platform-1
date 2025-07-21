@@ -68,7 +68,7 @@ public class UserDto {
         private Integer id;
         private String email;
         private String name;
-        private User.Role role;
+        private String role;
     }
 
     @Data

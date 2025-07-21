@@ -112,4 +112,5 @@ public class UserController {
  * 2. 사용자 활동 로그 기록 기능 추가 3
  * 3. 회원 탈퇴, 회원탈퇴시 데이터 처리 정책 추가 2
  * 4. 소셜 로그인 4
+ * 5. Refresh Token 저장 위치 -> Redis로 변경
  **/

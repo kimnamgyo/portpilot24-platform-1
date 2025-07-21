@@ -46,9 +46,9 @@ public class User {
     private LocalDateTime createdAt;
 
     public enum Role {
-        USER, ADMIN, ROOT
-    }
+        USER, ADMIN, ROOT;
 
+    }
     public void updateRole(Role role) {
         this.role = role;
     }
