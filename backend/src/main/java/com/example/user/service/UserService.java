@@ -29,6 +29,7 @@ public class UserService {
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
 
+    @Transactional
     public UserDto.SignupResponse signup(UserDto.SignupRequest request) {
         // 이메일 중복 확인
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -47,7 +48,10 @@ public class UserService {
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .role(User.Role.USER)
                 .isTermsAgreed(request.getAgreeTerms())
+                .isActive(false) // 기본값은 false로 설정
                 .build();
+
+
 
         User savedUser = userRepository.save(user);
 
@@ -62,6 +66,13 @@ public class UserService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
+
+        User user =userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+        if(!user.getIsActive()) {
+            throw new BusinessException(ErrorCode.USER_NOT_ACTIVE);
+        }
 
         // JWT 토큰 생성
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
@@ -102,6 +113,7 @@ public class UserService {
                         .build());
     }
 
+    @Transactional
     public UserDto.MessageResponse updateUserRole(Integer userId, UserDto.RoleUpdateRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
@@ -110,6 +122,42 @@ public class UserService {
 
         return UserDto.MessageResponse.builder()
                 .message("수정 완료")
+                .build();
+    }
+
+    @Transactional
+    public UserDto.MessageResponse activateUser(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+        user.setIsActive(true); // 활성화 상태로 변경
+
+        return UserDto.MessageResponse.builder()
+                .message("사용자 활성화 완료")
+                .build();
+    }
+
+    @Transactional
+    public UserDto.MessageResponse inActivateUser(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+        user.setIsActive(false); // 활성화 상태로 변경
+
+        return UserDto.MessageResponse.builder()
+                .message("사용자 비활성화 완료")
+                .build();
+    }
+
+    @Transactional
+    public UserDto.MessageResponse deleteUser(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+        userRepository.delete(user); // 사용자 삭제
+
+        return UserDto.MessageResponse.builder()
+                .message("사용자 삭제 완료")
                 .build();
     }
 }

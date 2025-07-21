@@ -15,7 +15,8 @@ public enum ErrorCode {
     // 인증 관련
     UNAUTHORIZED(401, "인증이 필요합니다."),
     FORBIDDEN(403, "권한이 없습니다."),
-    INVALID_TOKEN(401, "유효하지 않은 토큰입니다.");
+    INVALID_TOKEN(401, "유효하지 않은 토큰입니다."),
+    USER_NOT_ACTIVE(403, "사용자가 활성화되지 않았습니다.");
 
     private final int status;
     private final String message;

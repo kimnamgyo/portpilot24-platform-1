@@ -58,4 +58,30 @@ public class UserController {
         UserDto.MessageResponse response = userService.updateUserRole(userId, request);
         return ResponseEntity.ok(response);
     }
+
+    @PatchMapping("/admin/users/{userId}/activate")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ROOT')")
+    public ResponseEntity<UserDto.MessageResponse> activateUser(
+            @PathVariable Integer userId) {
+        UserDto.MessageResponse response = userService.activateUser(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/admin/users/{userId}/inactivate")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ROOT')")
+    public ResponseEntity<UserDto.MessageResponse> inActivateUser(
+            @PathVariable Integer userId) {
+        UserDto.MessageResponse response = userService.inActivateUser(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/admin/users/{userId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ROOT')")
+    public ResponseEntity<UserDto.MessageResponse> deleteUser(
+            @PathVariable Integer userId) {
+        UserDto.MessageResponse response = userService.deleteUser(userId);
+        return ResponseEntity.ok(response);
+    }
+
+
 }

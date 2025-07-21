@@ -2,17 +2,14 @@ package com.example.user.domain;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "USERS")
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -34,6 +31,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE", nullable = false)
     private Role role;
+
+    @Column(name = "IS_ACTIVE", nullable = false)
+    private Boolean isActive;
 
     @Column(name = "IS_TERMS_AGREED", nullable = false)
     private Boolean isTermsAgreed;
