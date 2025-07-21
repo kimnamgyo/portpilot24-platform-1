@@ -1,11 +1,12 @@
 package com.example.comment.service;
 
-import com.example.board.Post;
-import com.example.board.PostRepository;
+import com.example.post.domain.PostEntity;
+import com.example.post.repository.postRepository;
 import com.example.comment.domain.Comment;
-import com.example.comment.domain.CommentRepository;
-import com.example.user.User;
+import com.example.comment.repository.CommentRepository;
+import com.example.user.domain.User;
 
+import com.example.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +16,27 @@ import java.util.List;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final PostRepository postRepository;
+    private final postRepository PostRepository;
+    private final UserRepository userRepository;
 
-    public CommentService(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentService(CommentRepository commentRepository, postRepository PostRepository,
+                          UserRepository userRepository) {
         this.commentRepository = commentRepository;
-        this.postRepository = postRepository;
+        this.PostRepository = PostRepository;
+        this.userRepository = userRepository;
     }
 
     /**
      * 댓글 작성
      */
-    public Comment createComment(Long postId, String content, User user) {
-        Post post = postRepository.findById(postId)
+    public Comment createComment(Long postId, Long userId, String content) {
+        PostEntity post = PostRepository.findById(postId)
             .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        User user = new User();
+
+//        User user = userRepository.findById(userId)
+//            .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
         Comment comment = new Comment(post, user, content);
         return commentRepository.save(comment);
@@ -48,7 +57,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
             .orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
 
-        if (!comment.getAuthor().getId().equals(user.getId())) {
+        if (!comment.getUserId().equals(user.getUserId())) {
             throw new SecurityException("댓글 수정 권한이 없습니다.");
         }
 
@@ -62,7 +71,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
             .orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
 
-        if (!comment.getAuthor().getId().equals(user.getId())) {
+        if (!comment.getUserId().equals(user.getUserId())) {
             throw new SecurityException("댓글 삭제 권한이 없습니다.");
         }
 

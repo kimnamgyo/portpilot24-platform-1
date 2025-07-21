@@ -33,7 +33,7 @@ public class UserDto {
     @Data
     @Builder
     public static class SignupResponse {
-        private Integer id;
+        private Long id;
         private String email;
     }
 
@@ -51,23 +51,35 @@ public class UserDto {
     @Data
     @Builder
     public static class LoginResponse {
-        private String token;
+        private String accessToken;
+        private String refreshToken;
+    }
+
+    @Data
+    @Builder
+    public static class RefreshTokenRequest {
+        @NotBlank(message = "리프레시 토큰은 필수입니다.")
+        private String refreshToken;
     }
 
     @Data
     @Builder
     public static class UserInfo {
-        private Integer id;
+        private Long id;
         private String email;
         private String name;
-        private User.Role role;
+        private String role;
     }
 
     @Data
     @Builder
     public static class UserListItem {
-        private Integer id;
+        private Long id;
         private String email;
+        private String name;
+        private User.Role role;
+        private Boolean isActive;
+        private Boolean isTermsAgreed;
     }
 
     @Builder
@@ -82,5 +94,33 @@ public class UserDto {
     @Builder
     public static class MessageResponse {
         private String message;
+    }
+
+    @Data
+    public static class PasswordChangeRequest {
+        private String currentPassword;
+        private String newPassword;
+    }
+
+    @Data
+    @Builder
+    public static class EmailCheckResponse {
+        private Boolean isAvailable;
+        private String message;
+
+        public static EmailCheckResponse available() {
+            return EmailCheckResponse.builder()
+                    .isAvailable(true)
+                    .message("사용 가능한 이메일입니다.")
+                    .build();
+        }
+
+        public static EmailCheckResponse notAvailable() {
+            return EmailCheckResponse.builder()
+                    .isAvailable(false)
+                    .message("이미 사용중인 이메일입니다.")
+                    .build();
+        }
+
     }
 }

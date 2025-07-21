@@ -4,7 +4,7 @@ import com.example.comment.domain.Comment;
 import com.example.comment.dto.CommentRequestDto;
 import com.example.comment.dto.CommentResponseDto;
 import com.example.comment.service.CommentService;
-import com.example.user.User;
+import com.example.user.domain.User;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,10 +28,10 @@ public class CommentController {
      */
     @PostMapping("/{postId}")
     public ResponseEntity<?> createComment(@PathVariable Long postId,
-            @RequestBody CommentRequestDto request,
-            @AuthenticationPrincipal User user) {
-        Comment comment = commentService.createComment(postId, request.getContent(), user);
-        return ResponseEntity.ok(new CommentResponseDto(comment, user.getId()));
+            @AuthenticationPrincipal User user,
+            @RequestBody CommentRequestDto request) {
+        Comment comment = commentService.createComment(postId, user.getUserId().longValue(), request.getContent());
+        return ResponseEntity.ok(new CommentResponseDto(comment, user.getUserId().longValue())); // ✅ 수정
     }
 
     /**
@@ -40,9 +40,11 @@ public class CommentController {
     @GetMapping("/{postId}")
     public ResponseEntity<?> getComments(@PathVariable Long postId,
             @AuthenticationPrincipal User user) {
+        Long currentUserId = user != null ? user.getUserId().longValue() : -1L;
+
         List<Comment> comments = commentService.getCommentsByPostId(postId);
         List<CommentResponseDto> response = comments.stream()
-                .map(comment -> new CommentResponseDto(comment, user.getId()))
+                .map(comment -> new CommentResponseDto(comment, currentUserId))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(response);

@@ -1,6 +1,6 @@
 package com.example.user.controller;
 
-import com.example.user.config.SecurityConfig;
+import com.example.config.SecurityConfig;
 import com.example.user.dto.UserDto;
 import com.example.user.service.JwtAuthenticationEntryPoint;
 import com.example.user.service.JwtUtil;
@@ -78,7 +78,7 @@ class UserControllerTest {
                 .build();
 
         signupResponse = UserDto.SignupResponse.builder()
-                .id(1)
+                .id(1L)
                 .email("test@example.com")
                 .build();
     }
@@ -103,7 +103,8 @@ class UserControllerTest {
                 .message("로그아웃 완료")
                 .build();
 
-        when(userService.logout()).thenReturn(response);
+        when(userService.logout("test@example.com"))
+                .thenReturn(response);
 
         mockMvc.perform(post("/api/users/logout"))
                 .andExpect(status().isOk())
