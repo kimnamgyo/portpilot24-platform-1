@@ -2,17 +2,14 @@ package com.example.user.domain;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "USERS")
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -35,8 +32,17 @@ public class User {
     @Column(name = "ROLE", nullable = false)
     private Role role;
 
+    @Column(name = "IS_ACTIVE", nullable = false)
+    private Boolean isActive;
+
     @Column(name = "IS_TERMS_AGREED", nullable = false)
     private Boolean isTermsAgreed;
+
+    @Column(name = "REFRESH_TOKEN")
+    private String refreshToken;
+
+    @Version
+    private Long version;
 
     @CreationTimestamp
     @Column(name = "CREATED_AT", nullable = false)
@@ -44,11 +50,14 @@ public class User {
 
     public enum Role {
         USER, ADMIN, ROOT
-    }
 
-    // 업데이트 메서드
+    }
     public void updateRole(Role role) {
         this.role = role;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
 

@@ -103,7 +103,8 @@ class UserControllerTest {
                 .message("로그아웃 완료")
                 .build();
 
-        when(userService.logout()).thenReturn(response);
+        when(userService.logout("test@example.com"))
+                .thenReturn(response);
 
         mockMvc.perform(post("/api/users/logout"))
                 .andExpect(status().isOk())
