@@ -28,9 +28,9 @@ public class CommentController {
      */
     @PostMapping("/{postId}")
     public ResponseEntity<?> createComment(@PathVariable Long postId,
-            @RequestBody CommentRequestDto request,
-            @AuthenticationPrincipal User user) {
-        Comment comment = commentService.createComment(postId, request.getContent(), user);
+            @AuthenticationPrincipal User user,
+            @RequestBody CommentRequestDto request) {
+        Comment comment = commentService.createComment(postId, user.getUserId().longValue(), request.getContent());
         return ResponseEntity.ok(new CommentResponseDto(comment, user.getUserId().longValue())); // ✅ 수정
     }
 
