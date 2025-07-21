@@ -1,4 +1,4 @@
-package com.example.user.config;
+package com.example.config;
 
 import com.example.user.service.JwtAuthenticationEntryPoint;
 import com.example.user.service.JwtAuthenticationFilter;

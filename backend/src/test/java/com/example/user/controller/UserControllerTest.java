@@ -1,6 +1,6 @@
 package com.example.user.controller;
 
-import com.example.user.config.SecurityConfig;
+import com.example.config.SecurityConfig;
 import com.example.user.dto.UserDto;
 import com.example.user.service.JwtAuthenticationEntryPoint;
 import com.example.user.service.JwtUtil;
@@ -78,7 +78,7 @@ class UserControllerTest {
                 .build();
 
         signupResponse = UserDto.SignupResponse.builder()
-                .id(1)
+                .id(1L)
                 .email("test@example.com")
                 .build();
     }
