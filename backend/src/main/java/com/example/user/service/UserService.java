@@ -160,5 +160,21 @@ public class UserService {
                 .message("사용자 삭제 완료")
                 .build();
     }
+
+    @Transactional
+    public UserDto.MessageResponse changePassword(String email, UserDto.PasswordChangeRequest request) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
+            throw new BusinessException(ErrorCode.INVALID_PASSWORD);
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+
+        return UserDto.MessageResponse.builder()
+                .message("비밀번호 변경 완료")
+                .build();
+    }
 }
 

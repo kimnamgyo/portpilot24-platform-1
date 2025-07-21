@@ -75,6 +75,15 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/users/password")
+    public ResponseEntity<UserDto.MessageResponse> changePassword(
+            Authentication authentication,
+            @RequestBody UserDto.PasswordChangeRequest request) {
+        String email = authentication.getName();
+        UserDto.MessageResponse response = userService.changePassword(email, request);
+        return ResponseEntity.ok(response);
+    }
+
     @DeleteMapping("/admin/users/{userId}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('ROOT')")
     public ResponseEntity<UserDto.MessageResponse> deleteUser(
