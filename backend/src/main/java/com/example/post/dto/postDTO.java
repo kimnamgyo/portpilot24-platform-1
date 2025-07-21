@@ -4,16 +4,13 @@ import java.time.LocalDateTime;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.post.domain.Post;
+import com.example.post.domain.PostEntity;
 import com.example.post.dto.*;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Data
-@Getter
-@Setter
-public class postDTO {
+public class PostDTO {
 
     private Long post_id;
     private Long user_id;
@@ -29,23 +26,21 @@ public class postDTO {
     private String serverFileName;
     private int fileAttached;
 
+    public static PostDTO toPostDTO(PostEntity postEntity){
+        PostDTO postDTO = new PostDTO();
+        postDTO.setPost_id(postEntity.getPost_id());
+        postDTO.setUser_id(postEntity.getUser_id());
+        postDTO.setTitle(postEntity.getTitle());
+        postDTO.setContent(postEntity.getContent());
+        postDTO.setIs_Notice(postEntity.getIs_Notice());
+        postDTO.setCreated_At(postEntity.getCreated_At());
+        postDTO.setUpdated_At(postEntity.getUpdated_At());
 
-
-    public static postDTO toPostDTO(Post post){
-        postDTO postDTO = new postDTO();
-        postDTO.setPost_id(post.getPost_id());
-        postDTO.setUser_id(post.getUser_id());
-        postDTO.setTitle(post.getTitle());
-        postDTO.setContent(post.getContent());
-        postDTO.setIs_Notice(post.getIs_Notice());
-        postDTO.setCreated_At(post.getCreated_At());
-        postDTO.setUpdated_At(post.getUpdated_At());
-
-        if(post.getFileAttached() == 0){
-            postDTO.setFileAttached(post.getFileAttached());
-        }else{
-            postDTO.setFileAttached(post.getFileAttached());
-        }
+        // if(post.getFileAttached() == 0){
+        //     postDTO.setFileAttached(postEntity.getFileAttached());
+        // }else{
+        //     postDTO.setFileAttached(postEntity.getFileAttached());
+        // }
 
         return postDTO;
     }
