@@ -1,5 +1,6 @@
 package com.example.user.dto;
 
+
 import com.example.user.domain.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
