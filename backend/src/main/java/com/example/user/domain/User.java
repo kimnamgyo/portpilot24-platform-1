@@ -38,6 +38,9 @@ public class User {
     @Column(name = "IS_TERMS_AGREED", nullable = false)
     private Boolean isTermsAgreed;
 
+    @Column(name = "REFRESH_TOKEN")
+    private String refreshToken;
+
     @CreationTimestamp
     @Column(name = "CREATED_AT", nullable = false)
     private LocalDateTime createdAt;
@@ -46,9 +49,12 @@ public class User {
         USER, ADMIN, ROOT
     }
 
-    // 업데이트 메서드
     public void updateRole(Role role) {
         this.role = role;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
 

@@ -76,16 +76,54 @@ public class UserService {
 
         // JWT 토큰 생성
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        String token = jwtUtil.generateToken(userDetails);
+        String accessToken = jwtUtil.generateToken(userDetails);
+        String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+
+        user.updateRefreshToken(refreshToken);
+        userRepository.save(user);
 
         return UserDto.LoginResponse.builder()
-                .token(token)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
-    public UserDto.MessageResponse logout() {
-        // JWT는 stateless이므로 서버에서 특별한 처리 없음
-        // 클라이언트에서 토큰 삭제 처리
+    @Transactional
+    public UserDto.LoginResponse refreshToken(UserDto.RefreshTokenRequest request) {
+        String refreshToken = request.getRefreshToken();
+
+        if (!jwtUtil.validateToken(refreshToken)) {
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+        }
+
+        String email = jwtUtil.getUsernameFromToken(refreshToken);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
+        if (!refreshToken.equals(user.getRefreshToken())) {
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+        }
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        String newAccessToken = jwtUtil.generateToken(userDetails);
+        String newRefreshToken = jwtUtil.generateRefreshToken(userDetails);
+
+        user.updateRefreshToken(newRefreshToken);
+        userRepository.save(user);
+
+        return UserDto.LoginResponse.builder()
+                .accessToken(newAccessToken)
+                .refreshToken(newRefreshToken)
+                .build();
+    }
+
+    @Transactional
+    public UserDto.MessageResponse logout(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+        user.updateRefreshToken(null); // 리프레시 토큰 삭제
+        userRepository.save(user);
+
         return UserDto.MessageResponse.builder()
                 .message("로그아웃 완료")
                 .build();
@@ -110,6 +148,10 @@ public class UserService {
                 .map(user -> UserDto.UserListItem.builder()
                         .id(user.getUserId())
                         .email(user.getEmail())
+                        .name(user.getName())
+                        .role(user.getRole())
+                        .isActive(user.getIsActive())
+                        .isTermsAgreed(user.getIsTermsAgreed())
                         .build());
     }
 

@@ -51,7 +51,15 @@ public class UserDto {
     @Data
     @Builder
     public static class LoginResponse {
-        private String token;
+        private String accessToken;
+        private String refreshToken;
+    }
+
+    @Data
+    @Builder
+    public static class RefreshTokenRequest {
+        @NotBlank(message = "리프레시 토큰은 필수입니다.")
+        private String refreshToken;
     }
 
     @Data
@@ -68,6 +76,10 @@ public class UserDto {
     public static class UserListItem {
         private Integer id;
         private String email;
+        private String name;
+        private User.Role role;
+        private Boolean isActive;
+        private Boolean isTermsAgreed;
     }
 
     @Builder
@@ -82,5 +94,11 @@ public class UserDto {
     @Builder
     public static class MessageResponse {
         private String message;
+    }
+
+    @Data
+    public static class PasswordChangeRequest {
+        private String currentPassword;
+        private String newPassword;
     }
 }

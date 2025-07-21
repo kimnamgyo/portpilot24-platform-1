@@ -31,8 +31,16 @@ public class UserController {
     }
 
     @PostMapping("/users/logout")
-    public ResponseEntity<UserDto.MessageResponse> logout() {
-        UserDto.MessageResponse response = userService.logout();
+    public ResponseEntity<UserDto.MessageResponse> logout(Authentication authentication) {
+        String email = authentication.getName();
+        UserDto.MessageResponse response = userService.logout(email);
+        return ResponseEntity.ok(response);
+    }
+
+
+    @PostMapping("/users/refresh")
+    public ResponseEntity<UserDto.LoginResponse> refreshToken(@RequestBody UserDto.RefreshTokenRequest request) {
+        UserDto.LoginResponse response = userService.refreshToken(request);
         return ResponseEntity.ok(response);
     }
 
@@ -94,3 +102,13 @@ public class UserController {
 
 
 }
+
+/** todo : 할만한거
+ * 추가 기능 목록
+ * 리프래시 토큰 기능 추가
+ * 1. otp, email 기반 비밀번호 재발급 기능 추가 2
+ * 2. 사용자 활동 로그 기록 기능 추가 4
+ * 3. 회원 탈퇴, 회원탈퇴시 데이터 처리 정책 추가 3
+ * 4. 소셜 로그인 5
+ * 5. 회원가입시도 전, 이메일 중복 체크 기능 추가 1
+ **/
