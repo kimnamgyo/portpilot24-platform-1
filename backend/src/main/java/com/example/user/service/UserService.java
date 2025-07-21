@@ -7,6 +7,7 @@ import com.example.user.exception.ErrorCode;
 import com.example.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -51,14 +52,19 @@ public class UserService {
                 .isActive(false) // 기본값은 false로 설정
                 .build();
 
+        try {
+            // 2. DB에 저장 시도 (최종 방어선)
+            User savedUser = userRepository.save(user);
 
-
-        User savedUser = userRepository.save(user);
-
-        return UserDto.SignupResponse.builder()
-                .id(savedUser.getUserId())
-                .email(savedUser.getEmail())
-                .build();
+            return UserDto.SignupResponse.builder()
+                    .id(savedUser.getUserId())
+                    .email(savedUser.getEmail())
+                    .build();
+        } catch (DataIntegrityViolationException e) {
+            // 3. 동시성 문제로 UNIQUE 제약 조건 위반 시 예외 처리
+            log.warn("회원가입 중 이메일 중복 경쟁 상태 발생: {}", request.getEmail());
+            throw new BusinessException(ErrorCode.DUPLICATE_EMAIL);
+        }
     }
 
     public UserDto.LoginResponse login(UserDto.LoginRequest request) {
