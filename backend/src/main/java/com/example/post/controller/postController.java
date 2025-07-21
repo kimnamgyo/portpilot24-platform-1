@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.post.domain.Post;
-import com.example.post.dto.postDTO;
-import com.example.post.service.postService;
+import com.example.post.domain.PostEntity;
+import com.example.post.domain.PostEntity;
+import com.example.post.dto.PostDTO;
+import com.example.post.service.PostService;
 
 import jakarta.persistence.PostUpdate;
 import lombok.RequiredArgsConstructor;
@@ -23,31 +24,31 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/posts")
 @RestController
-public class postController {
+public class PostController {
 
-    private final postService postService;
+    private final PostService postService;
 
     //전체조회
     @GetMapping
-    public List<Post> getPost(){
+    public List<PostEntity> getPost(){
         return postService.findPosts();
     }
 
     //특정게시물조회
     @GetMapping("/{id}")
-    public Post getPost(@PathVariable Long id){
+    public PostEntity getPost(@PathVariable Long id){
         return postService.findPost(id);
     }
     
     //게시글등록
     @PostMapping
-    public void createPost(@RequestBody postDTO postDTO) throws IOException{
+    public void insertPost(@RequestBody PostDTO postDTO) throws IOException{
         postService.insertPost(postDTO);
     }
 
     //게시글수정
     @PatchMapping("/{id}")
-    public Post updatePost(@PathVariable Long id, @RequestBody Post post){
+    public PostEntity updatePost(@PathVariable Long id, @RequestBody PostEntity post){
         return postService.updatePost(id, post);
     }
 
