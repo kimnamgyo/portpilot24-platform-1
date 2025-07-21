@@ -221,12 +221,14 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDto.EmailCheckResponse checkEmailAvailability(String email) {
-        boolean isAvailable = !userRepository.existsByEmail(email);
-
-        if (isAvailable) {
-            return UserDto.EmailCheckResponse.available();
-        } else {
+        if(email == null || email.isEmpty()) {
+            throw new BusinessException(ErrorCode.INVALID_INPUT);
+        }
+        log.info("Checking email availability for: {}", email);
+        if (userRepository.existsByEmail(email)) {
             return UserDto.EmailCheckResponse.notAvailable();
+        } else {
+            return UserDto.EmailCheckResponse.available();
         }
     }
 }
