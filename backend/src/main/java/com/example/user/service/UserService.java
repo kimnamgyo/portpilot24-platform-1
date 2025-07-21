@@ -218,5 +218,16 @@ public class UserService {
                 .message("비밀번호 변경 완료")
                 .build();
     }
+
+    @Transactional(readOnly = true)
+    public UserDto.EmailCheckResponse checkEmailAvailability(String email) {
+        boolean isAvailable = !userRepository.existsByEmail(email);
+
+        if (isAvailable) {
+            return UserDto.EmailCheckResponse.available();
+        } else {
+            return UserDto.EmailCheckResponse.notAvailable();
+        }
+    }
 }
 

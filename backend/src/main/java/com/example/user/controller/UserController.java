@@ -37,7 +37,6 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-
     @PostMapping("/users/refresh")
     public ResponseEntity<UserDto.LoginResponse> refreshToken(@RequestBody UserDto.RefreshTokenRequest request) {
         UserDto.LoginResponse response = userService.refreshToken(request);
@@ -100,15 +99,17 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-
+    @GetMapping("/users/check-email")
+    public ResponseEntity<UserDto.EmailCheckResponse> checkEmail(@RequestParam String email) {
+        UserDto.EmailCheckResponse response = userService.checkEmailAvailability(email);
+        return ResponseEntity.ok(response);
+    }
 }
 
 /** todo : 할만한거
  * 추가 기능 목록
- * 리프래시 토큰 기능 추가
- * 1. otp, email 기반 비밀번호 재발급 기능 추가 2
- * 2. 사용자 활동 로그 기록 기능 추가 4
- * 3. 회원 탈퇴, 회원탈퇴시 데이터 처리 정책 추가 3
- * 4. 소셜 로그인 5
- * 5. 회원가입시도 전, 이메일 중복 체크 기능 추가 1
+ * 1. otp, email 기반 비밀번호 재발급 기능 추가 1
+ * 2. 사용자 활동 로그 기록 기능 추가 3
+ * 3. 회원 탈퇴, 회원탈퇴시 데이터 처리 정책 추가 2
+ * 4. 소셜 로그인 4
  **/

@@ -101,4 +101,26 @@ public class UserDto {
         private String currentPassword;
         private String newPassword;
     }
+
+    @Data
+    @Builder
+    public static class EmailCheckResponse {
+        private Boolean isAvailable;
+        private String message;
+
+        public static EmailCheckResponse available() {
+            return EmailCheckResponse.builder()
+                    .isAvailable(true)
+                    .message("사용 가능한 이메일입니다.")
+                    .build();
+        }
+
+        public static EmailCheckResponse notAvailable() {
+            return EmailCheckResponse.builder()
+                    .isAvailable(false)
+                    .message("이미 사용중인 이메일입니다.")
+                    .build();
+        }
+
+    }
 }
