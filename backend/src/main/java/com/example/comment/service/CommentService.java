@@ -33,10 +33,8 @@ public class CommentService {
         PostEntity post = PostRepository.findById(postId)
             .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
 
-        User user = new User();
-
-//        User user = userRepository.findById(userId)
-//            .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
 
         Comment comment = new Comment(post, user, content);
         return commentRepository.save(comment);
