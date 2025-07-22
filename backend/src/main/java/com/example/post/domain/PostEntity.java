@@ -1,14 +1,17 @@
 package com.example.post.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.post.dto.PostDTO;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -25,6 +28,7 @@ public class PostEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "post_id", nullable = false)
     private Long post_id;
 
     @Column
@@ -48,9 +52,8 @@ public class PostEntity {
     @Column
     private int fileAttached;
 
-    @OneToMany
-    @JoinColumn
-    private PostFileEntity postFileEntity;
+    @OneToMany(mappedBy = "postEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<PostFileEntity> postFileEntityList = new ArrayList<>();
 
     //첨부 파일이 없는경우 게시글에 사용되는 데이터만 담음.
     //파일 정보를 제외한 게시글 정보를 담는 엔티티를 생성하고 PostDTO의 정보를 해당 엔티티에 담는 함수
@@ -95,7 +98,7 @@ public class PostEntity {
         toPostEntity.setIs_Notice(is_Notice);
         toPostEntity.setCreated_At(created_At);
         toPostEntity.setUpdated_At(updated_At);
-        toPostEntity.setPostFileEntity(postFileEntity);
+        toPostEntity.getPostFileEntityList().add(postFileEntity);
 
         return toPostEntity;
     }

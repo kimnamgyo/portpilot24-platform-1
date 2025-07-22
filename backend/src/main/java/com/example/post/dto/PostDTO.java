@@ -41,8 +41,8 @@ public class PostDTO {
             postDTO.setFileAttached(postEntity.getFileAttached());
         }else{
             postDTO.setFileAttached(postEntity.getFileAttached());
-            postDTO.setOriginalFileName(postEntity.getPostFileEntity().getOriginalFileName());
-            postDTO.setServerFileName(postEntity.getPostFileEntity().getSavedFileName());
+            postDTO.setOriginalFileName(postEntity.getPostFileEntityList().get(0).getOriginalFileName());
+            postDTO.setServerFileName(postEntity.getPostFileEntityList().get(0).getSavedFileName());
         }
         return postDTO;
     }

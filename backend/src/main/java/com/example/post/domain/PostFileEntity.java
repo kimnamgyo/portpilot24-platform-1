@@ -36,7 +36,7 @@ public class PostFileEntity {
     private String savedFileName;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "post_id", nullable = false)
     private PostEntity postEntity;
 
     // 파일에 대한 정보를 담는 DB // 파일 자체는 서버의 로컬공간에 따로 저장
