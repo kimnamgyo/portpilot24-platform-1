@@ -245,5 +245,16 @@ public class UserService {
             return UserDto.EmailCheckResponse.available();
         }
     }
+
+    @Transactional(readOnly = true)
+    public User getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+        if (!user.getIsActive()) {
+            throw new BusinessException(ErrorCode.USER_NOT_ACTIVE);
+        }
+        return user;
+    }
+
 }
 
