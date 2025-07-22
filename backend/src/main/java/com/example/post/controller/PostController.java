@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.post.domain.PostEntity;
 import com.example.post.dto.PostDTO;
 import com.example.post.service.PostService;
 
@@ -27,13 +26,13 @@ public class PostController {
 
     //전체조회
     @GetMapping
-    public List<PostEntity> getPost(){
+    public List<PostDTO> getPost(){
         return postService.findPosts();
     }
 
     //특정게시물조회
     @GetMapping("/{id}")
-    public PostEntity getPost(@PathVariable Long id){
+    public PostDTO getPost(@PathVariable Long id){
         return postService.findPost(id);
     }
     
@@ -45,8 +44,8 @@ public class PostController {
 
     //게시글수정
     @PatchMapping("/{id}")
-    public PostEntity updatePost(@PathVariable Long id, @RequestBody PostEntity post){
-        return postService.updatePost(id, post);
+    public void updatePost(@PathVariable Long id, @RequestBody PostDTO post) throws IOException{
+        postService.updatePost(id, post);
     }
 
     //게시글삭제

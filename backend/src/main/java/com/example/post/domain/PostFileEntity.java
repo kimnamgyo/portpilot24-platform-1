@@ -40,7 +40,8 @@ public class PostFileEntity {
     private PostEntity postEntity;
 
     // 파일에 대한 정보를 담는 DB // 파일 자체는 서버의 로컬공간에 따로 저장
-    public static PostFileEntity postFileEntity(PostDTO postDTO){
+    // 데이터베이스로 들어갈 정보들을 위한 객체 생성 함수
+    public static PostFileEntity toPostFileEntity(PostDTO postDTO){
         PostFileEntity postFileEntity = new PostFileEntity();
 
         postFileEntity.setOriginalFileName(postDTO.getOriginalFileName());
@@ -51,12 +52,13 @@ public class PostFileEntity {
         return postFileEntity;
     }
     
-    // public static PostEntity toPostFile(Post post, String originalFileName, String savedFileName) {
-    //     PostEntity toPostFile = new PostFileEntity();
-    //     toPostFile.setOriginalFileName(originalFileName);
-    //     toPostFile.setSavedFileName(savedFileName);
-    //     toPostFile.setPost(post);
-    // return post;
-    // }
+    // 데이터베이스로 부터 게시글 엔티티를 가져와서 파일 정보가 들어간 새로운 엔티티 생성.
+    public static PostFileEntity toPostFileEntity(PostEntity postEntity, String originalFileName, String savedFileName) {
+        PostFileEntity toPostFileEntity = new PostFileEntity();
+        toPostFileEntity.setOriginalFileName(originalFileName);
+        toPostFileEntity.setSavedFileName(savedFileName);
+        toPostFileEntity.setPostEntity(postEntity);
+    return toPostFileEntity;
+    }
     
 }

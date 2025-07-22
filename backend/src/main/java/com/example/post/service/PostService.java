@@ -2,8 +2,6 @@ package com.example.post.service;
 
 import java.io.IOException;
 import java.util.List;
-
-import com.example.post.domain.PostEntity;
 import com.example.post.dto.PostDTO;
 
 public interface PostService {
@@ -12,13 +10,13 @@ public interface PostService {
     void insertPost(PostDTO postDTO) throws IOException;
 
     //전체 게시글 조회(research_all)
-    List<PostEntity> findPosts();
+    List<PostDTO> findPosts();
     
     //특정 게시글 조회(research_post)
-    PostEntity findPost(Long id);
+    PostDTO findPost(Long id);
 
     //게시글 수정
-    PostEntity updatePost(Long id, PostEntity post);
+    void updatePost(Long id, PostDTO post) throws IOException;
 
     //게시글 삭제
     void deletePost(Long id);

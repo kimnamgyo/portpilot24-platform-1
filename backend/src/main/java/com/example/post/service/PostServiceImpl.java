@@ -2,17 +2,20 @@ package com.example.post.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.post.domain.PostEntity;
+import com.example.post.domain.PostFileEntity;
 import com.example.post.dto.PostDTO;
 import com.example.post.repository.postFileRepository;
 import com.example.post.repository.postRepository;
 
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,78 +33,77 @@ public class PostServiceImpl implements PostService {
             PostEntity post = PostEntity.noFilePostEntity(postDTO);
             postRepository.save(post);
         }else{
+
+            // PostDTO에서 파일 꺼내 변수에 저장
             MultipartFile postedFile = postDTO.getPostFile();
 
+            // 파일에서 이름을 꺼내서 담아줌.
             String originalFilename = postedFile.getOriginalFilename();
 
+            // 서버에 저장할 이름을 따로 지정
             String savedFileName = System.currentTimeMillis() + "_" + originalFilename;
 
-            String savePath = "C:/springboot_img/" + savedFileName;
-
+            // 파일 자체는 데이터베이스 내가 아닌 서버의 로컬 공간에 저장
+            // 파일이 들어갈 경로를 저장
+            String savePath = "C:/springboot_file/" + savedFileName;
+            // 파일 저장
             postedFile.transferTo(new File(savePath));
 
-            PostEntity post = PostEntity.filePostEntity(postDTO);
+            // 파일 정보를 제외한 게시글 저장
+            PostEntity filePost = PostEntity.filePostEntity(postDTO);
+            postRepository.save(filePost);
 
-            // Long savedId = postRepository.save(post).getPost_id();
-            // PostEntity postInDB = postRepository.findById(savedId).get();
+            Long saveId = postRepository.save(filePost).getPost_id();
+            PostEntity post = postRepository.findById(saveId).get(); // 첨부된 파일이 들어간 게시글 엔티티를 받아옴.
 
-            // PostFileEntity postFileEntity = PostFileEntity.toPostFile(postInDB, originalFilename, savedFileName);
-            
-            // postRepository.save(post);
-            // postFileRepository.save(postFileEntity);
+            PostFileEntity postFileEntity = PostFileEntity.toPostFileEntity(post, originalFilename, savedFileName);
+            postFileRepository.save(postFileEntity);
             
         } 
     }
 
-    // @Transactional
-    // public PostDTO findById(Long id) {
-    //     Optional<Post> optionalPostEntity = postRepository.findById(id);
-    //     if (optionalPostEntity.isPresent()) {
-    //         PostEntity post = optionalPostEntity.get();
-    //         PostDTO postToDTO = postDTO.toPostDTO(post);
-    //         return postToDTO;
-    //     } else {
-    //         return null;
-    //     }
-    // }
-
-    // @Transactional
-    // public List<postDTO> findAll() {
-
-    //     List<Post> postEntityList = postRepository.findAll();
-
-    //     List<postDTO> boardDTOList = new ArrayList<>();
-    //     for (Post boardEntity : postEntityList) {
-    //         boardDTOList.add(postDTO.toPostDTO(boardEntity));
-    //     }
-
-    //     return boardDTOList;
-    // }
 
     //전체 게시글 조회
     @Override
-    public List<PostEntity> findPosts() {
-        return postRepository.findAll();
+    @Transactional
+    public List<PostDTO> findPosts() {
+
+        List<PostEntity> postEntityList = postRepository.findAll();
+        List<PostDTO> postDTOList = new ArrayList<>();
+        for (PostEntity postEntity : postEntityList) {
+            postDTOList.add(PostDTO.toPostDTO(postEntity));
+        }
+        return postDTOList;
     }
 
     //특정 게시글 조회
     @Override
-    public PostEntity findPost(Long id) {
-        return postRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("게시글을 찾을 수 없습니다.")
-        );
+    @Transactional
+    public PostDTO findPost(Long id) {
+        Optional<PostEntity> optionalPostEntity = postRepository.findById(id);
+        if (optionalPostEntity.isPresent()) {
+            PostEntity post = optionalPostEntity.get();
+            PostDTO postToDTO = PostDTO.toPostDTO(post);
+            return postToDTO;
+        } else {
+            return null;
+        }
+
+        // return postRepository.findById(id).orElseThrow(
+        //         () -> new EntityNotFoundException("게시글을 찾을 수 없습니다.")
+        // );
     }
 
     //게시글 수정
     @Override
-    public PostEntity updatePost(Long id, PostEntity post) {
+    public void updatePost(Long id, PostDTO post) throws IOException {
         
-        PostEntity fixedPost = findPost(id);
+        PostDTO fixedPost = findPost(id);
         fixedPost.setTitle(post.getTitle());
         fixedPost.setContent(post.getContent());
         fixedPost.setUpdated_At(post.getUpdated_At());
 
-        return postRepository.save(fixedPost);
+        insertPost(fixedPost);
     }
 
     //게시글 삭제

@@ -25,6 +25,8 @@ public class PostDTO {
     private String serverFileName;
     private int fileAttached;
 
+    // 엔티티의 데이터를 DTO에 넣을때 사용할 함수
+    // response 용도
     public static PostDTO toPostDTO(PostEntity postEntity){
         PostDTO postDTO = new PostDTO();
         postDTO.setPost_id(postEntity.getPost_id());
@@ -35,12 +37,13 @@ public class PostDTO {
         postDTO.setCreated_At(postEntity.getCreated_At());
         postDTO.setUpdated_At(postEntity.getUpdated_At());
 
-        // if(post.getFileAttached() == 0){
-        //     postDTO.setFileAttached(postEntity.getFileAttached());
-        // }else{
-        //     postDTO.setFileAttached(postEntity.getFileAttached());
-        // }
-
+        if(postEntity.getFileAttached() == 0){
+            postDTO.setFileAttached(postEntity.getFileAttached());
+        }else{
+            postDTO.setFileAttached(postEntity.getFileAttached());
+            postDTO.setOriginalFileName(postEntity.getPostFileEntity().getOriginalFileName());
+            postDTO.setServerFileName(postEntity.getPostFileEntity().getSavedFileName());
+        }
         return postDTO;
     }
 

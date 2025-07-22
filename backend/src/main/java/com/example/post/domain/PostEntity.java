@@ -8,6 +8,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,7 +48,12 @@ public class PostEntity {
     @Column
     private int fileAttached;
 
+    @OneToMany
+    @JoinColumn
+    private PostFileEntity postFileEntity;
+
     //첨부 파일이 없는경우 게시글에 사용되는 데이터만 담음.
+    //파일 정보를 제외한 게시글 정보를 담는 엔티티를 생성하고 PostDTO의 정보를 해당 엔티티에 담는 함수
     public static PostEntity noFilePostEntity(PostDTO postDTO){
         PostEntity noFilePostEntity = new PostEntity();
 
@@ -55,11 +62,15 @@ public class PostEntity {
         noFilePostEntity.setIs_Notice(postDTO.getIs_Notice());
         noFilePostEntity.setCreated_At(postDTO.getCreated_At());
         noFilePostEntity.setUpdated_At(noFilePostEntity.getUpdated_At());
+
+        //파일 업로드 유무
+        noFilePostEntity.setFileAttached(0);
         
         return noFilePostEntity;
     }
 
     //첨부 파일이 있는 경우 첨부 파일이 있는지 유무를 확인하는 변수를 추가로 담음
+    //데이터베이스로 들어갈 데이터를 담을 객체를 만드는 함수
     public static PostEntity filePostEntity(PostDTO postDTO){
         PostEntity filePostEntity = new PostEntity();
         
@@ -70,10 +81,23 @@ public class PostEntity {
         filePostEntity.setUpdated_At(filePostEntity.getUpdated_At());
 
         //파일 업로드 유무
-        filePostEntity.setFileAttached(filePostEntity.getFileAttached());
+        filePostEntity.setFileAttached(1);
 
         return filePostEntity;
         
+    }
+
+    public static PostEntity toPostEntity(PostFileEntity postFileEntity,
+     String title, String content, Boolean is_Notice, LocalDateTime created_At, LocalDateTime updated_At){
+        PostEntity toPostEntity = new PostEntity();
+        toPostEntity.setTitle(title);
+        toPostEntity.setContent(content);
+        toPostEntity.setIs_Notice(is_Notice);
+        toPostEntity.setCreated_At(created_At);
+        toPostEntity.setUpdated_At(updated_At);
+        toPostEntity.setPostFileEntity(postFileEntity);
+
+        return toPostEntity;
     }
 
 
