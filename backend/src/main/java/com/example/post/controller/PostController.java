@@ -38,7 +38,7 @@ public class PostController {
     
     //게시글등록
     @PostMapping
-    public void insertPost(@RequestBody PostDTO postDTO) throws IOException{
+    public void insertPost(PostDTO postDTO) throws IOException{
         postService.insertPost(postDTO);
     }
 
