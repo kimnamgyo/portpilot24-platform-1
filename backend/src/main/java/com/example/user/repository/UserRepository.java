@@ -9,10 +9,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     boolean existsByEmail(String email);
-    Page<User> findAll(Pageable pageable);
+//    Page<User> findAll(Pageable pageable);
 
-    Optional<User> findById(Long userId);
+    // 사용자 ID로 사용자 조회
+//    Optional<User> findById(Long userId);
 }
