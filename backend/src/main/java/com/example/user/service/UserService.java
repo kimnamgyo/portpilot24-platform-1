@@ -170,7 +170,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto.MessageResponse updateUserRole(Integer userId, UserDto.RoleUpdateRequest request) {
+    public UserDto.MessageResponse updateUserRole(Long userId, UserDto.RoleUpdateRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
@@ -182,7 +182,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto.MessageResponse activateUser(Integer userId) {
+    public UserDto.MessageResponse activateUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
@@ -194,7 +194,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto.MessageResponse inActivateUser(Integer userId) {
+    public UserDto.MessageResponse inActivateUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
@@ -206,7 +206,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto.MessageResponse deleteUser(Integer userId) {
+    public UserDto.MessageResponse deleteUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
 
