@@ -104,13 +104,17 @@ public class PostServiceImpl implements PostService {
         fixedPost.setContent(post.getContent());
         fixedPost.setUpdated_At(post.getUpdated_At());
 
-        insertPost(fixedPost);
+        PostEntity postEntity = new PostEntity();
+        postEntity = postRepository.findById(id).get();
+        postRepository.save(postEntity);
+
+        
     }
 
     //게시글 삭제
     @Override
     public void deletePost(Long id) {
-        deletePost(id);
+        postRepository.deleteById(id);
     }
     
 }
