@@ -29,11 +29,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public void insertPost(PostDTO postDTO) throws IOException  {
 
-        if(postDTO.getPostFile().isEmpty()){
-            PostEntity post = PostEntity.noFilePostEntity(postDTO);
-            postRepository.save(post);
-        }else{
+        MultipartFile postFile = postDTO.getPostFile();
 
+        if (postFile != null && !postFile.isEmpty()) {
             // PostDTO에서 파일 꺼내 변수에 저장
             MultipartFile postedFile = postDTO.getPostFile();
 
@@ -58,7 +56,10 @@ public class PostServiceImpl implements PostService {
 
             PostFileEntity postFileEntity = PostFileEntity.toPostFileEntity(post, originalFilename, savedFileName);
             postFileRepository.save(postFileEntity);
-            
+
+        }else{
+            PostEntity post = PostEntity.noFilePostEntity(postDTO);
+            postRepository.save(post);
         } 
     }
 
