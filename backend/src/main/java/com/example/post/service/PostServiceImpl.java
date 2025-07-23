@@ -15,6 +15,7 @@ import com.example.post.dto.PostDTO;
 import com.example.post.repository.postFileRepository;
 import com.example.post.repository.postRepository;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +28,7 @@ public class PostServiceImpl implements PostService {
 
     // 게시글 등록
     @Override
-    public void insertPost(PostDTO postDTO) throws IOException  {
+    public void insertPost(@RequestBody PostDTO postDTO) throws IOException  {
 
         MultipartFile postFile = postDTO.getPostFile();
 
