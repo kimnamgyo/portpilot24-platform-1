@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -77,6 +81,21 @@ public class PostServiceImpl implements PostService {
         return postDTOList;
     }
 
+    //페이징처리
+    @Override
+    public Page<PostDTO> paging(Pageable pageable) {
+        
+        int page = pageable.getPageNumber() - 1;
+        int pageLimit = 10;
+
+        Page<PostEntity> postEntities = 
+        postRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "post_id")));
+
+        Page<PostDTO> postDTOs = postEntities.map(post -> new PostDTO());
+        
+        return postDTOs;
+    }
+
     //특정 게시글 조회
     @Override
     @Transactional
@@ -119,5 +138,8 @@ public class PostServiceImpl implements PostService {
     public void deletePost(Long id) {
         postRepository.deleteById(id);
     }
+
+
+
     
 }

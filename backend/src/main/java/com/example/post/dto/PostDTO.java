@@ -6,9 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.post.domain.PostEntity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostDTO {
 
     private Long post_id;
@@ -48,4 +52,12 @@ public class PostDTO {
         return postDTO;
     }
 
+    // 게시글 목록에서 필요한 정보를 DTO에 담기위한 생성자
+    public PostDTO(Long postid, String name, String title, LocalDateTime createAt){
+        this.post_id = postid;
+        this.name = name;
+        this.title = title;
+        this.created_At = createAt;
+    }
+    
 }
