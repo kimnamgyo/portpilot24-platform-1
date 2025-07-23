@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostService {
 
     // 게시글 등록
     @Override
-    public void insertPost(@RequestBody PostDTO postDTO) throws IOException  {
+    public void insertPost(PostDTO postDTO) throws IOException  {
 
         MultipartFile postFile = postDTO.getPostFile();
 
