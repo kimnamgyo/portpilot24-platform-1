@@ -106,6 +106,9 @@ public class PostServiceImpl implements PostService {
 
         PostEntity postEntity = new PostEntity();
         postEntity = postRepository.findById(id).get();
+        postEntity.setTitle(fixedPost.getTitle());
+        postEntity.setContent(fixedPost.getContent());
+        postEntity.setUpdated_At(fixedPost.getUpdated_At());
         postRepository.save(postEntity);
 
         
