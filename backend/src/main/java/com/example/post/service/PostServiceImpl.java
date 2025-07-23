@@ -15,7 +15,6 @@ import com.example.post.dto.PostDTO;
 import com.example.post.repository.postFileRepository;
 import com.example.post.repository.postRepository;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
