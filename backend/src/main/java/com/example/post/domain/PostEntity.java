@@ -35,6 +35,9 @@ public class PostEntity {
     private Long user_id;
 
     @Column
+    private String name;
+
+    @Column
     private String title;
 
     @Column
@@ -61,6 +64,7 @@ public class PostEntity {
         PostEntity noFilePostEntity = new PostEntity();
 
         noFilePostEntity.setUser_id(postDTO.getUser_id());
+        noFilePostEntity.setName(postDTO.getName());
         noFilePostEntity.setTitle(postDTO.getTitle());
         noFilePostEntity.setContent(postDTO.getContent());
         noFilePostEntity.setIs_Notice(postDTO.getIs_Notice());
@@ -79,6 +83,7 @@ public class PostEntity {
         PostEntity filePostEntity = new PostEntity();
         
         filePostEntity.setUser_id(postDTO.getUser_id());
+        filePostEntity.setName(postDTO.getName());
         filePostEntity.setTitle(postDTO.getTitle());
         filePostEntity.setContent(postDTO.getContent());
         filePostEntity.setIs_Notice(postDTO.getIs_Notice());

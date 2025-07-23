@@ -13,6 +13,7 @@ public class PostDTO {
 
     private Long post_id;
     private Long user_id;
+    private String name;
     private String title;
     private String content;
     private Boolean is_Notice;
@@ -26,11 +27,11 @@ public class PostDTO {
     private int fileAttached;
 
     // 엔티티의 데이터를 DTO에 넣을때 사용할 함수
-    // response 용도
     public static PostDTO toPostDTO(PostEntity postEntity){
         PostDTO postDTO = new PostDTO();
         postDTO.setPost_id(postEntity.getPost_id());
         postDTO.setUser_id(postEntity.getUser_id());
+        postDTO.setName(postEntity.getName());
         postDTO.setTitle(postEntity.getTitle());
         postDTO.setContent(postEntity.getContent());
         postDTO.setIs_Notice(postEntity.getIs_Notice());
