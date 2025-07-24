@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.post.dto.PostDTO;
 import com.example.post.service.PostService;
@@ -63,6 +65,12 @@ public class PostController {
     @PostMapping
     public void insertPost(@RequestBody PostDTO postDTO) throws IOException{
         postService.insertPost(postDTO);
+    }
+
+    //파일업로드(아직 로직 추가 안함.)
+    @PostMapping("/fileUpload")
+    public void fileUpload(@RequestParam MultipartFile file, @RequestParam String name){
+
     }
 
     //게시글수정

@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.post.domain.PostEntity;
 import com.example.post.domain.PostFileEntity;
+// import com.example.post.domain.PostFileEntity;
 import com.example.post.dto.PostDTO;
 import com.example.post.repository.postFileRepository;
 import com.example.post.repository.postRepository;
@@ -72,6 +73,29 @@ public class PostServiceImpl implements PostService {
     public void insertPost(PostDTO postDTO) throws IOException {
         PostEntity post = PostEntity.noFilePostEntity(postDTO);
         postRepository.save(post);
+    }
+
+    //파일 업로드 기능(아직 로직 추가 안함)
+    @Override
+    public void uploadFile(MultipartFile file, String name) throws IOException {
+
+            // 서버에 저장할 이름을 따로 지정
+            String savedFileName = System.currentTimeMillis() + "_" + name;
+
+            // 파일이 데이터베이스 내가 아닌 서버의 로컬 공간에 저장할 경우 사용(db에 집어넣을거면 85~89라인은 없어도 됩니다!)
+            // 파일이 들어갈 경로를 저장
+            String savePath = "C:/springboot_file/" + savedFileName;
+            // 파일 저장
+            file.transferTo(new File(savePath));
+
+            // 파일을 db에 저장할 경우(로컬에 저장할 생각이라면 92~97라인은 없어도 됩니다! 방식은 나중에 생각하는걸로....)
+            PostFileEntity postFileEntity = new PostFileEntity();
+            postFileEntity.setFile(file);
+            postFileEntity.setOriginalFileName(name);
+            postFileEntity.setSavedFileName(savedFileName);
+
+            postFileRepository.save(postFileEntity);
+
     }
     
     //전체 게시글 조회
@@ -146,6 +170,4 @@ public class PostServiceImpl implements PostService {
     }
 
 
-
-    
 }
