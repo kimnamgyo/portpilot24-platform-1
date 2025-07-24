@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,5 +75,31 @@ public class PostController {
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id){
         postService.deletePost(id);
+    }
+
+    //관리자 게시글 삭제
+    @DeleteMapping("/admin/{postId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ROOT')")
+    public ResponseEntity<?> deletePostByAdmin(@PathVariable Long postId) {
+        try {
+            postService.deletePost(postId);
+            return ResponseEntity.ok("관리자에 의한 게시글 삭제 성공");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("게시글 삭제 실패: " + e.getMessage());
+        }
+
+    }
+
+    //관리자 공지 작성
+    @PostMapping("/admin/notice")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ROOT')")
+    public ResponseEntity<?> createNotice(@RequestBody PostDTO postDTO) {
+        try {
+            postDTO.setIsNotice(true); // 공지사항으로 설정
+            postService.insertPost(postDTO);
+            return ResponseEntity.ok("공지사항 작성 성공");
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body("공지사항 작성 실패: " + e.getMessage());
+        }
     }
 }

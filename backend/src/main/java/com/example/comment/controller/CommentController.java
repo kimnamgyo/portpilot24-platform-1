@@ -9,6 +9,7 @@ import com.example.user.domain.User;
 import com.example.user.repository.UserRepository;
 import com.example.user.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -88,6 +89,18 @@ public class CommentController {
             User user = userService.getUserByEmail(email);
             commentService.deleteComment(commentId, user);
             return ResponseEntity.ok("삭제 완료");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/admin/{commentId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ROOT')")
+    public ResponseEntity<?> deleteCommentByAdmin(@PathVariable Long commentId,
+                                                  Authentication authentication) {
+        try {
+            commentService.deleteCommentById(commentId);
+            return ResponseEntity.ok("관리자에 의한 댓글 삭제 완료");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

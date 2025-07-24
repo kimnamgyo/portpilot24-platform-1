@@ -75,4 +75,10 @@ public class CommentService {
 
         commentRepository.delete(comment);
     }
+
+    public void deleteCommentById(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다."));
+        commentRepository.delete(comment);
+    }
 }
