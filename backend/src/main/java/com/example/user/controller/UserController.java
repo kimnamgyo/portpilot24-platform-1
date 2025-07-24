@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @GetMapping("/admin/users")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('ROOT')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('ROOT')") // /admin/users?page=0&size=10&sort=createdAt,desc
     public ResponseEntity<Page<UserDto.UserListItem>> getUserList(Pageable pageable) {
         Page<UserDto.UserListItem> response = userService.getUserList(pageable);
         return ResponseEntity.ok(response);

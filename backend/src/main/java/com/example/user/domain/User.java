@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,33 +16,34 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "EMAIL", unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "PASSWORD_HASH", nullable = false)
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ROLE", nullable = false)
+    @Column(name = "role", nullable = false)
     private Role role;
 
-    @Column(name = "IS_ACTIVE", nullable = false)
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    @Column(name = "IS_TERMS_AGREED", nullable = false)
+    @Column(name = "is_terms_agreed", nullable = false)
     private Boolean isTermsAgreed;
 
-    @Column(name = "REFRESH_TOKEN")
+    @Column(name = "refresh_token")
     private String refreshToken;
 
     @Version
-    private Long version;
+    @Column(name = "version", nullable = false)
+    private Long version = 0L;
 
     @CreationTimestamp
     @Column(name = "CREATED_AT", nullable = false)

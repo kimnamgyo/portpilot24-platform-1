@@ -24,10 +24,10 @@ public class PostFileEntity {
     private long id;
 
     @Column
-    private LocalDateTime created_At;
+    private LocalDateTime createdAt;
 
     @Column
-    private LocalDateTime upodated_At;
+    private LocalDateTime upodatedAt;
 
     @Column
     private String originalFileName;
@@ -46,8 +46,8 @@ public class PostFileEntity {
 
         postFileEntity.setOriginalFileName(postDTO.getOriginalFileName());
         postFileEntity.setSavedFileName(postDTO.getServerFileName());
-        postFileEntity.setCreated_At(postDTO.getCreated_At());
-        postFileEntity.setUpodated_At(postDTO.getUpdated_At());
+        postFileEntity.setCreatedAt(postDTO.getCreated_At());
+        postFileEntity.setUpodatedAt(postDTO.getUpdated_At());
 
         return postFileEntity;
     }

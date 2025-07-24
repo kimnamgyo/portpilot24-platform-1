@@ -33,14 +33,14 @@ public class PostDTO {
     // 엔티티의 데이터를 DTO에 넣을때 사용할 함수
     public static PostDTO toPostDTO(PostEntity postEntity){
         PostDTO postDTO = new PostDTO();
-        postDTO.setPost_id(postEntity.getPost_id());
-        postDTO.setUser_id(postEntity.getUser_id());
+        postDTO.setPost_id(postEntity.getPostId());
+        postDTO.setUser_id(postEntity.getUserId());
         postDTO.setName(postEntity.getName());
         postDTO.setTitle(postEntity.getTitle());
         postDTO.setContent(postEntity.getContent());
-        postDTO.setIs_Notice(postEntity.getIs_Notice());
-        postDTO.setCreated_At(postEntity.getCreated_At());
-        postDTO.setUpdated_At(postEntity.getUpdated_At());
+        postDTO.setIs_Notice(postEntity.getIsNotice());
+        postDTO.setCreated_At(postEntity.getCreatedAt());
+        postDTO.setUpdated_At(postEntity.getUpdatedAt());
 
         if(postEntity.getFileAttached() == 0){
             postDTO.setFileAttached(postEntity.getFileAttached());

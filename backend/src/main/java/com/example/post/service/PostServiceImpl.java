@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
             PostEntity filePost = PostEntity.filePostEntity(postDTO);
             postRepository.save(filePost);
 
-            Long saveId = postRepository.save(filePost).getPost_id();
+            Long saveId = postRepository.save(filePost).getPostId();
             PostEntity post = postRepository.findById(saveId).get(); // 첨부된 파일이 들어간 게시글 엔티티를 받아옴.
 
             PostFileEntity postFileEntity = PostFileEntity.toPostFileEntity(post, originalFilename, savedFileName);
@@ -127,7 +127,7 @@ public class PostServiceImpl implements PostService {
         postEntity = postRepository.findById(id).get();
         postEntity.setTitle(fixedPost.getTitle());
         postEntity.setContent(fixedPost.getContent());
-        postEntity.setUpdated_At(fixedPost.getUpdated_At());
+        postEntity.setUpdatedAt(fixedPost.getUpdated_At());
         postRepository.save(postEntity);
 
         

@@ -29,10 +29,10 @@ public class PostEntity {
     @Id
     @GeneratedValue
     @Column(name = "post_id", nullable = false)
-    private Long post_id;
+    private Long postId;
 
     @Column
-    private Long user_id;
+    private Long userId;
 
     @Column
     private String name;
@@ -44,13 +44,13 @@ public class PostEntity {
     private String content;
 
     @Column
-    private Boolean is_Notice;
+    private Boolean isNotice;
 
     @Column
-    private LocalDateTime created_At;
+    private LocalDateTime createdAt;
 
     @Column
-    private LocalDateTime updated_At;
+    private LocalDateTime updatedAt;
 
     @Column
     private int fileAttached;
@@ -63,13 +63,13 @@ public class PostEntity {
     public static PostEntity noFilePostEntity(PostDTO postDTO){
         PostEntity noFilePostEntity = new PostEntity();
 
-        noFilePostEntity.setUser_id(postDTO.getUser_id());
+        noFilePostEntity.setUserId(postDTO.getUser_id());
         noFilePostEntity.setName(postDTO.getName());
         noFilePostEntity.setTitle(postDTO.getTitle());
         noFilePostEntity.setContent(postDTO.getContent());
-        noFilePostEntity.setIs_Notice(postDTO.getIs_Notice());
-        noFilePostEntity.setCreated_At(postDTO.getCreated_At());
-        noFilePostEntity.setUpdated_At(noFilePostEntity.getUpdated_At());
+        noFilePostEntity.setIsNotice(postDTO.getIs_Notice());
+        noFilePostEntity.setCreatedAt(postDTO.getCreated_At());
+        noFilePostEntity.setUpdatedAt(noFilePostEntity.getUpdatedAt());
 
         //파일 업로드 유무
         noFilePostEntity.setFileAttached(0);
@@ -82,13 +82,13 @@ public class PostEntity {
     public static PostEntity filePostEntity(PostDTO postDTO){
         PostEntity filePostEntity = new PostEntity();
         
-        filePostEntity.setUser_id(postDTO.getUser_id());
+        filePostEntity.setUserId(postDTO.getUser_id());
         filePostEntity.setName(postDTO.getName());
         filePostEntity.setTitle(postDTO.getTitle());
         filePostEntity.setContent(postDTO.getContent());
-        filePostEntity.setIs_Notice(postDTO.getIs_Notice());
-        filePostEntity.setCreated_At(postDTO.getCreated_At());
-        filePostEntity.setUpdated_At(filePostEntity.getUpdated_At());
+        filePostEntity.setIsNotice(postDTO.getIs_Notice());
+        filePostEntity.setCreatedAt(postDTO.getCreated_At());
+        filePostEntity.setUpdatedAt(filePostEntity.getUpdatedAt());
 
         //파일 업로드 유무
         filePostEntity.setFileAttached(1);
@@ -102,9 +102,9 @@ public class PostEntity {
         PostEntity toPostEntity = new PostEntity();
         toPostEntity.setTitle(title);
         toPostEntity.setContent(content);
-        toPostEntity.setIs_Notice(is_Notice);
-        toPostEntity.setCreated_At(created_At);
-        toPostEntity.setUpdated_At(updated_At);
+        toPostEntity.setIsNotice(is_Notice);
+        toPostEntity.setCreatedAt(created_At);
+        toPostEntity.setUpdatedAt(updated_At);
         toPostEntity.getPostFileEntityList().add(postFileEntity);
 
         return toPostEntity;
