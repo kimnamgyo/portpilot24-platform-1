@@ -43,7 +43,7 @@ public class User {
 
     @Version
     @Column(name = "version", nullable = false)
-    private Long version = 0L;
+    private Long version;
 
     @CreationTimestamp
     @Column(name = "CREATED_AT", nullable = false)
