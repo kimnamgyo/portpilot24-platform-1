@@ -67,8 +67,8 @@ public class PostEntity {
         noFilePostEntity.setName(postDTO.getName());
         noFilePostEntity.setTitle(postDTO.getTitle());
         noFilePostEntity.setContent(postDTO.getContent());
-        noFilePostEntity.setIsNotice(postDTO.getIs_Notice());
-        noFilePostEntity.setCreatedAt(postDTO.getCreated_At());
+        noFilePostEntity.setIsNotice(postDTO.getIsNotice());
+        noFilePostEntity.setCreatedAt(postDTO.getCreatedAt());
         noFilePostEntity.setUpdatedAt(noFilePostEntity.getUpdatedAt());
 
         //파일 업로드 유무
@@ -86,8 +86,8 @@ public class PostEntity {
         filePostEntity.setName(postDTO.getName());
         filePostEntity.setTitle(postDTO.getTitle());
         filePostEntity.setContent(postDTO.getContent());
-        filePostEntity.setIsNotice(postDTO.getIs_Notice());
-        filePostEntity.setCreatedAt(postDTO.getCreated_At());
+        filePostEntity.setIsNotice(postDTO.getIsNotice());
+        filePostEntity.setCreatedAt(postDTO.getCreatedAt());
         filePostEntity.setUpdatedAt(filePostEntity.getUpdatedAt());
 
         //파일 업로드 유무

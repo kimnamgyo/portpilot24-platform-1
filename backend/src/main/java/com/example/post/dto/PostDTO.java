@@ -20,9 +20,9 @@ public class PostDTO {
     private String name;
     private String title;
     private String content;
-    private Boolean is_Notice;
-    private LocalDateTime created_At;
-    private LocalDateTime updated_At;
+    private Boolean isNotice;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 
     private MultipartFile postFile;
@@ -38,9 +38,9 @@ public class PostDTO {
         postDTO.setName(postEntity.getName());
         postDTO.setTitle(postEntity.getTitle());
         postDTO.setContent(postEntity.getContent());
-        postDTO.setIs_Notice(postEntity.getIsNotice());
-        postDTO.setCreated_At(postEntity.getCreatedAt());
-        postDTO.setUpdated_At(postEntity.getUpdatedAt());
+        postDTO.setIsNotice(postEntity.getIsNotice());
+        postDTO.setCreatedAt(postEntity.getCreatedAt());
+        postDTO.setUpdatedAt(postEntity.getUpdatedAt());
 
         if(postEntity.getFileAttached() == 0){
             postDTO.setFileAttached(postEntity.getFileAttached());
@@ -57,7 +57,7 @@ public class PostDTO {
         this.postId = postid;
         this.name = name;
         this.title = title;
-        this.created_At = createAt;
+        this.createdAt = createAt;
     }
     
 }

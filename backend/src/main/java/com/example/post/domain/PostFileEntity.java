@@ -46,8 +46,8 @@ public class PostFileEntity {
 
         postFileEntity.setOriginalFileName(postDTO.getOriginalFileName());
         postFileEntity.setSavedFileName(postDTO.getServerFileName());
-        postFileEntity.setCreatedAt(postDTO.getCreated_At());
-        postFileEntity.setUpodatedAt(postDTO.getUpdated_At());
+        postFileEntity.setCreatedAt(postDTO.getCreatedAt());
+        postFileEntity.setUpodatedAt(postDTO.getUpdatedAt());
 
         return postFileEntity;
     }

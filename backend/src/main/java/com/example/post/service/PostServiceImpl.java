@@ -121,13 +121,13 @@ public class PostServiceImpl implements PostService {
         PostDTO fixedPost = findPost(id);
         fixedPost.setTitle(post.getTitle());
         fixedPost.setContent(post.getContent());
-        fixedPost.setUpdated_At(post.getUpdated_At());
+        fixedPost.setUpdatedAt(post.getUpdatedAt());
 
         PostEntity postEntity = new PostEntity();
         postEntity = postRepository.findById(id).get();
         postEntity.setTitle(fixedPost.getTitle());
         postEntity.setContent(fixedPost.getContent());
-        postEntity.setUpdatedAt(fixedPost.getUpdated_At());
+        postEntity.setUpdatedAt(fixedPost.getUpdatedAt());
         postRepository.save(postEntity);
 
         
