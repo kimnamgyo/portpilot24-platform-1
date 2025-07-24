@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.post.dto.PostDTO;
 
-import jakarta.mail.Multipart;
+// import jakarta.mail.Multipart;
 
 public interface PostService {
 

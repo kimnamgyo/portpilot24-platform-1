@@ -32,8 +32,8 @@ public class PostFileEntity {
     private String savedFileName;
 
     // 파일을 서버 로컬에 저장할 경우 35~36라인 제거
-    @Column
-    private MultipartFile file;
+    // @Column
+    // private MultipartFile file;
 
     // @ManyToOne
     // @JoinColumn(name = "post_id", nullable = false)

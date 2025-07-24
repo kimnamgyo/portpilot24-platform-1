@@ -14,10 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.post.domain.PostEntity;
-import com.example.post.domain.PostFileEntity;
 // import com.example.post.domain.PostFileEntity;
 import com.example.post.dto.PostDTO;
-import com.example.post.repository.postFileRepository;
+// import com.example.post.repository.postFileRepository;
 import com.example.post.repository.postRepository;
 
 import jakarta.transaction.Transactional;
@@ -28,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class PostServiceImpl implements PostService {
 
     private final postRepository postRepository;
-    private final postFileRepository postFileRepository;
+    // private final postFileRepository postFileRepository;
 
     // 게시글 등록(파일첨부 기능을 따로 빼기 전)
     // @Override
@@ -88,13 +87,14 @@ public class PostServiceImpl implements PostService {
             // 파일 저장
             file.transferTo(new File(savePath));
 
+            // hibernate가 multipartfile 타입의 데이터를 자동으로 다뤄주지 않음....
             // 파일을 db에 저장할 경우(로컬에 저장할 생각이라면 92~97라인은 없어도 됩니다! 방식은 나중에 생각하는걸로....)
-            PostFileEntity postFileEntity = new PostFileEntity();
-            postFileEntity.setFile(file);
-            postFileEntity.setOriginalFileName(name);
-            postFileEntity.setSavedFileName(savedFileName);
+            // PostFileEntity postFileEntity = new PostFileEntity();
+            // postFileEntity.setFile(file);
+            // postFileEntity.setOriginalFileName(name);
+            // postFileEntity.setSavedFileName(savedFileName);
 
-            postFileRepository.save(postFileEntity);
+            // postFileRepository.save(postFileEntity);
 
     }
     
@@ -115,7 +115,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<PostDTO> paging(Pageable pageable) {
         
-        int page = pageable.getPageNumber() - 1;
+        int page = pageable.getPageNumber();
         int pageLimit = 10;
 
         Page<PostEntity> postEntities = 
