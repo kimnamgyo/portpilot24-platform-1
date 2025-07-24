@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PostDTO {
 
-    private Long post_id;
-    private Long user_id;
+    private Long postId;
+    private Long userId;
     private String name;
     private String title;
     private String content;
@@ -33,8 +33,8 @@ public class PostDTO {
     // 엔티티의 데이터를 DTO에 넣을때 사용할 함수
     public static PostDTO toPostDTO(PostEntity postEntity){
         PostDTO postDTO = new PostDTO();
-        postDTO.setPost_id(postEntity.getPostId());
-        postDTO.setUser_id(postEntity.getUserId());
+        postDTO.setPostId(postEntity.getPostId());
+        postDTO.setUserId(postEntity.getUserId());
         postDTO.setName(postEntity.getName());
         postDTO.setTitle(postEntity.getTitle());
         postDTO.setContent(postEntity.getContent());
@@ -54,7 +54,7 @@ public class PostDTO {
 
     // 게시글 목록에서 필요한 정보를 DTO에 담기위한 생성자
     public PostDTO(Long postid, String name, String title, LocalDateTime createAt){
-        this.post_id = postid;
+        this.postId = postid;
         this.name = name;
         this.title = title;
         this.created_At = createAt;

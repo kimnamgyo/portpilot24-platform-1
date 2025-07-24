@@ -63,7 +63,7 @@ public class PostEntity {
     public static PostEntity noFilePostEntity(PostDTO postDTO){
         PostEntity noFilePostEntity = new PostEntity();
 
-        noFilePostEntity.setUserId(postDTO.getUser_id());
+        noFilePostEntity.setUserId(postDTO.getUserId());
         noFilePostEntity.setName(postDTO.getName());
         noFilePostEntity.setTitle(postDTO.getTitle());
         noFilePostEntity.setContent(postDTO.getContent());
@@ -82,7 +82,7 @@ public class PostEntity {
     public static PostEntity filePostEntity(PostDTO postDTO){
         PostEntity filePostEntity = new PostEntity();
         
-        filePostEntity.setUserId(postDTO.getUser_id());
+        filePostEntity.setUserId(postDTO.getUserId());
         filePostEntity.setName(postDTO.getName());
         filePostEntity.setTitle(postDTO.getTitle());
         filePostEntity.setContent(postDTO.getContent());
