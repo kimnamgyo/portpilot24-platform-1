@@ -14,7 +14,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByPost(PostEntity post);
 
     // 게시글 ID로 댓글 조회
-    @Query("SELECT c FROM Comment c WHERE c.post.post_id = :postId")
+    @Query("SELECT c FROM Comment c WHERE c.post.id = :postId")
     List<Comment> findByPostId(@Param("postId") Long postId);
 
     // 사용자 ID로 댓글 조회
