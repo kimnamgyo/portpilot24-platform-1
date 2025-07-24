@@ -13,31 +13,27 @@ function CommentSection({ postId }) {
 
   const fetchComments = async () => {
     try {
-      const response = await apiClient.get(`/posts/${postId}/comments`);
+      // 1. API 경로 변경
+      const response = await apiClient.get(`/comments/${postId}`);
       setComments(response.data);
-    } catch (error) {
-      console.error('Failed to fetch comments:', error);
-    } finally {
-      setLoading(false);
-    }
+    } catch (error) { /* ... */ }
   };
 
   useEffect(() => {
     fetchComments();
   }, [postId]);
-  
+
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return;
     try {
-      await apiClient.post(`/posts/${postId}/comments`, { content: newComment });
+      // 2. API 경로 변경
+      await apiClient.post(`/comments/${postId}`, { content: newComment });
       setNewComment('');
       showNotification('댓글이 성공적으로 작성되었습니다.', 'success');
-      fetchComments(); // 댓글 목록 새로고침
-    } catch (error) {
-      showNotification('댓글 작성에 실패했습니다.', 'error');
-    }
+      fetchComments();
+    } catch (error) { /* ... */ }
   };
-  
+
   if (loading) {
     return <CircularProgress />;
   }
@@ -55,15 +51,17 @@ function CommentSection({ postId }) {
         <Button variant="contained" onClick={handleCommentSubmit}>등록</Button>
       </Box>
       <List>
+        // return 문 안의 comments.map 부분을 아래와 같이 수정
         {comments.map((comment, index) => (
           <Box key={comment.id}>
             <ListItem alignItems="flex-start">
               <ListItemText
+                // 3. 백엔드에서 보내주는 authorName, content 사용
                 primary={comment.authorName}
                 secondary={comment.content}
               />
-              {/* 본인 댓글에만 수정/삭제 버튼 표시 */}
-              {user?.id === comment.authorId && (
+              {/* 4. 백엔드에서 주는 mine 필드로 본인 댓글 여부 확인 */}
+              {comment.mine && (
                 <Box>
                   <Button size="small">수정</Button>
                   <Button size="small" color="error">삭제</Button>

@@ -15,23 +15,31 @@ function BoardListPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      try {
-        const response = await apiClient.get('/posts', {
-          params: { page: page - 1, size: 10, query: searchQuery }
-        });
-        setPosts(response.data.content);
-        setTotalPages(response.data.totalPages);
-      } catch (error) {
-        console.error('Failed to fetch posts:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPosts();
-  }, [page, searchQuery]);
+
+
+
+  // useEffect 부분을 아래 내용으로 교체하세요.
+useEffect(() => {
+  const fetchPosts = async () => {
+    setLoading(true);
+    try {
+      // 1. API 경로를 '/posts/paging'으로 변경
+      const response = await apiClient.get('/posts/paging', {
+        params: { page: page - 1, size: 10, query: searchQuery }
+      });
+      // 2. 응답 데이터 구조에 맞춰 posts와 totalPages 설정
+      setPosts(response.data.content);
+      setTotalPages(response.data.totalPages);
+    } catch (error) {
+      console.error('Failed to fetch posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchPosts();
+}, [page, searchQuery]);
+
+
 
   const handleSearch = () => {
     setPage(1); // 검색 시 첫 페이지로 초기화
