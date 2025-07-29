@@ -25,7 +25,7 @@ useEffect(() => {
     try {
       // 1. API 경로를 '/posts/paging'으로 변경
       const response = await apiClient.get('/posts/paging', {
-        params: { page: page - 1, size: 10, query: searchQuery }
+        params: { page: page, size: 10, query: searchQuery }
       });
       // 2. 응답 데이터 구조에 맞춰 posts와 totalPages 설정
       setPosts(response.data.content);
@@ -46,37 +46,63 @@ useEffect(() => {
     // searchQuery state가 변경되면서 useEffect가 자동으로 다시 실행됨
   };
 
-  return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h4" component="h1">게시판</Typography>
-        <Button variant="contained" onClick={() => navigate('/posts/new')}>글 작성</Button>
-      </Box>
+return (
+  <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+      <Typography variant="h4" component="h1">게시판</Typography>
+      <Button variant="contained" onClick={() => navigate('/posts/new')}>글 작성</Button>
+    </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2, gap: 1 }}>
-        <TextField 
-          label="검색" 
-          variant="outlined" 
-          size="small" 
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-        />
-        <Button variant="contained" onClick={handleSearch}>검색</Button>
-      </Box>
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2, gap: 1 }}>
+      <TextField 
+        label="검색" 
+        variant="outlined" 
+        size="small" 
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+      />
+      <Button variant="contained" onClick={handleSearch}>검색</Button>
+    </Box>
 
-      {loading ? <CircularProgress /> : (
-        <>
-          <TableContainer component={Paper}>
-            {/* Table 내용은 이전과 동일 */}
-          </TableContainer>
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-            <Pagination count={totalPages} page={page} onChange={(e, value) => setPage(value)} color="primary" />
-          </Box>
-        </>
-      )}
-    </Container>
-  );
+    {loading ? <CircularProgress /> : (
+      <>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>제목</TableCell>
+                <TableCell>작성자</TableCell>
+                <TableCell>내용</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {posts.map((post) => (
+                <TableRow key={post.postId}>
+                  <TableCell>{post.postId}</TableCell>
+                  <TableCell>{post.title}</TableCell>
+                  <TableCell>{post.name || '익명'}</TableCell>
+                  <TableCell>{post.content}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <Pagination 
+            count={totalPages} 
+            page={page} 
+            onChange={(e, value) => setPage(value)} 
+            color="primary" 
+          />
+        </Box>
+      </>
+    )}
+  </Container>
+);
+
 }
 
 export default BoardListPage;

@@ -54,12 +54,5 @@ public class PostDTO {
         return postDTO;
     }
 
-    // 게시글 목록에서 필요한 정보를 DTO에 담기위한 생성자
-    public PostDTO(Long postid, String name, String title, LocalDateTime createAt){
-        this.postId = postid;
-        this.name = name;
-        this.title = title;
-        this.createdAt = createAt;
-    }
     
 }

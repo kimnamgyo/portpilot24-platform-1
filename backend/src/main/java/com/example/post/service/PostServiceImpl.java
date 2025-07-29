@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.post.repository.postPagingRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.post.domain.PostEntity;
 // import com.example.post.domain.PostFileEntity;
 import com.example.post.dto.PostDTO;
+import com.example.post.repository.postPagingRepository;
 // import com.example.post.repository.postFileRepository;
 import com.example.post.repository.postRepository;
 
@@ -116,8 +116,6 @@ public class PostServiceImpl implements PostService {
     //페이징처리
     @Override
     public Page<PostEntity> paging(Pageable pageable) {
-        
-        int page = pageable.getPageNumber();
 
         
         return postPagingRepository.findAll(pageable);
