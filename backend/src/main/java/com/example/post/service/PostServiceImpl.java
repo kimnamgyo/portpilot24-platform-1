@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.post.repository.postPagingRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class PostServiceImpl implements PostService {
 
     private final postRepository postRepository;
+    private final postPagingRepository postPagingRepository;
     // private final postFileRepository postFileRepository;
 
     // 게시글 등록(파일첨부 기능을 따로 빼기 전)
@@ -113,17 +115,12 @@ public class PostServiceImpl implements PostService {
 
     //페이징처리
     @Override
-    public Page<PostDTO> paging(Pageable pageable) {
+    public Page<PostEntity> paging(Pageable pageable) {
         
         int page = pageable.getPageNumber();
-        int pageLimit = 10;
 
-        Page<PostEntity> postEntities = 
-        postRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "post_id")));
-
-        Page<PostDTO> postDTOs = postEntities.map(post -> new PostDTO());
         
-        return postDTOs;
+        return postPagingRepository.findAll(pageable);
     }
 
     //특정 게시글 조회

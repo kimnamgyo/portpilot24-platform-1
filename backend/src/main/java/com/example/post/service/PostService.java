@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.post.domain.PostEntity;
 import com.example.post.dto.PostDTO;
 
 // import jakarta.mail.Multipart;
@@ -23,7 +24,7 @@ public interface PostService {
     List<PostDTO> findPosts();
     
     //페이징 처리
-    Page<PostDTO> paging(Pageable pageable);
+    Page<PostEntity> paging(Pageable pageable);
     
     //특정 게시글 조회(research_post)
     PostDTO findPost(Long id);

@@ -70,7 +70,7 @@ public class PostEntity {
         noFilePostEntity.setIsNotice(postDTO.getIsNotice());
         noFilePostEntity.setCreatedAt(postDTO.getCreatedAt());
         noFilePostEntity.setUpdatedAt(noFilePostEntity.getUpdatedAt());
-
+        
         //파일 업로드 유무
         // noFilePostEntity.setFileAttached(0);
         
@@ -111,6 +111,16 @@ public class PostEntity {
     //     return toPostEntity;
     // }
 
+    public static PostEntity pageEntity(PostDTO postDTO){
+        PostEntity pagePostEntity = new PostEntity();
+
+        pagePostEntity.setPostId(postDTO.getPostId());
+        pagePostEntity.setName(postDTO.getName()); 
+        pagePostEntity.setTitle(postDTO.getTitle());
+        pagePostEntity.setCreatedAt(postDTO.getCreatedAt());
+        
+        return pagePostEntity;
+    }
 
     
 }
