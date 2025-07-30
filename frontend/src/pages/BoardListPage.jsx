@@ -25,7 +25,7 @@ useEffect(() => {
     try {
       // 1. API 경로를 '/posts/paging'으로 변경
       const response = await apiClient.get('/posts/paging', {
-        params: { page: page, size: 10, query: searchQuery }
+        params: { page: page - 1, size: 10, query: searchQuery }
       });
       // 2. 응답 데이터 구조에 맞춰 posts와 totalPages 설정
       setPosts(response.data.content);
