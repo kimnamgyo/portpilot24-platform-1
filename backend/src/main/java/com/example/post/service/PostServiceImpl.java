@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +20,7 @@ import com.example.post.repository.postPagingRepository;
 // import com.example.post.repository.postFileRepository;
 import com.example.post.repository.postRepository;
 
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +30,8 @@ public class PostServiceImpl implements PostService {
 
     private final postRepository postRepository;
     private final postPagingRepository postPagingRepository;
+    // private final FileStorageService fileStorageService;
+
     // private final postFileRepository postFileRepository;
 
     // 게시글 등록(파일첨부 기능을 따로 빼기 전)
@@ -70,24 +73,35 @@ public class PostServiceImpl implements PostService {
     // }
 
     //게시글 등록
+    // @Override
+    // public PostEntity insertPost(PostDTO postDTO) throws IOException {
+    //     PostEntity post = PostEntity.noFilePostEntity(postDTO);
+
+    //     return postRepository.save(post);
+    // }
+
+
     @Override
-    public void insertPost(PostDTO postDTO) throws IOException {
-        PostEntity post = PostEntity.noFilePostEntity(postDTO);
-        postRepository.save(post);
+    public void insertPost(String title, String content) {
+        PostEntity postEntity = new PostEntity();
+        postEntity.setTitle(title);
+        postEntity.setContent(content);
+
+        postRepository.save(postEntity);
     }
 
     //파일 업로드 기능(아직 로직 추가 안함)
     @Override
-    public void uploadFile(MultipartFile file, String name) throws IOException {
+    public void uploadFile(List<MultipartFile> files) throws IOException {
 
             // 서버에 저장할 이름을 따로 지정
-            String savedFileName = System.currentTimeMillis() + "_" + name;
+            // String savedFileName = System.currentTimeMillis() + "_" + name;
 
             // 파일이 데이터베이스 내가 아닌 서버의 로컬 공간에 저장할 경우 사용(db에 집어넣을거면 85~89라인은 없어도 됩니다!)
             // 파일이 들어갈 경로를 저장
-            String savePath = "C:/springboot_file/" + savedFileName;
+            String savePath = "C:/springboot_file/";
             // 파일 저장
-            file.transferTo(new File(savePath));
+            ((MultipartFile) files).transferTo(new File(savePath));
 
             // hibernate가 multipartfile 타입의 데이터를 자동으로 다뤄주지 않음....
             // 파일을 db에 저장할 경우(로컬에 저장할 생각이라면 92~97라인은 없어도 됩니다! 방식은 나중에 생각하는걸로....)
@@ -115,9 +129,7 @@ public class PostServiceImpl implements PostService {
 
     //페이징처리
     @Override
-    public Page<PostEntity> paging(Pageable pageable) {
-
-        
+    public Page<PostEntity> paging(Pageable pageable) {  
         return postPagingRepository.findAll(pageable);
     }
 

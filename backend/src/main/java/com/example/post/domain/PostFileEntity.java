@@ -1,12 +1,14 @@
 package com.example.post.domain;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.post.dto.PostDTO;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +33,9 @@ public class PostFileEntity {
     @Column
     private String savedFileName;
 
+    @ElementCollection
+    private List<String> filePaths;
+    
     // 파일을 서버 로컬에 저장할 경우 35~36라인 제거
     // @Column
     // private MultipartFile file;

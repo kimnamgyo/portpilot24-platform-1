@@ -1,11 +1,6 @@
 package com.example.post.dto;
 
 import java.time.LocalDateTime;
-
-import org.springframework.data.domain.Page;
-
-import com.example.post.domain.PostEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

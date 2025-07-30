@@ -15,10 +15,11 @@ import com.example.post.dto.PostDTO;
 public interface PostService {
 
     //게시글 등록기능(create)
-    void insertPost(PostDTO postDTO) throws IOException;
+    // PostEntity insertPost(PostDTO postDTO) throws IOException;
+    void insertPost(String title, String content) throws IOException;
 
     //파일 업로드 기능
-    void uploadFile(MultipartFile file, String name) throws IOException;
+    void uploadFile(List<MultipartFile> files) throws IOException;
 
     //전체 게시글 조회(research_all)
     List<PostDTO> findPosts();
