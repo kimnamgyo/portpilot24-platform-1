@@ -24,11 +24,11 @@ public class PostDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-
-    private MultipartFile postFile;
-    private String originalFileName;
-    private String serverFileName;
-    private int fileAttached;
+    // 파일업로드는 따로 뺄것
+    // private MultipartFile postFile;
+    // private String originalFileName;
+    // private String serverFileName;
+    // private int fileAttached;
 
     // 엔티티의 데이터를 DTO에 넣을때 사용할 함수
     public static PostDTO toPostDTO(PostEntity postEntity){
@@ -42,22 +42,17 @@ public class PostDTO {
         postDTO.setCreatedAt(postEntity.getCreatedAt());
         postDTO.setUpdatedAt(postEntity.getUpdatedAt());
 
-        if(postEntity.getFileAttached() == 0){
-            postDTO.setFileAttached(postEntity.getFileAttached());
-        }else{
-            postDTO.setFileAttached(postEntity.getFileAttached());
-            postDTO.setOriginalFileName(postEntity.getPostFileEntityList().get(0).getOriginalFileName());
-            postDTO.setServerFileName(postEntity.getPostFileEntityList().get(0).getSavedFileName());
-        }
+        // 첨부파일 유무를 확인하던 함수.
+        // if(postEntity.getFileAttached() == 0){
+        //     postDTO.setFileAttached(postEntity.getFileAttached());
+        // }else{
+        //     postDTO.setFileAttached(postEntity.getFileAttached());
+        //     postDTO.setOriginalFileName(postEntity.getPostFileEntityList().get(0).getOriginalFileName());
+        //     postDTO.setServerFileName(postEntity.getPostFileEntityList().get(0).getSavedFileName());
+        // }
+
         return postDTO;
     }
 
-    // 게시글 목록에서 필요한 정보를 DTO에 담기위한 생성자
-    public PostDTO(Long postid, String name, String title, LocalDateTime createAt){
-        this.postId = postid;
-        this.name = name;
-        this.title = title;
-        this.createdAt = createAt;
-    }
     
 }
