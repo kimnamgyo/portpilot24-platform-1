@@ -1,4 +1,5 @@
 import { Container, Grid, Paper, Typography, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function DashboardPage() {
   return (
@@ -8,12 +9,15 @@ function DashboardPage() {
       </Typography>
       <Grid container spacing={3}>
         {/* Card for Container Monitoring */}
-        <Grid item xs={12} md={6} lg={4}>
-          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
-            <Typography variant="h6" color="primary" gutterBottom>컨테이너 모니터링</Typography>
-            <Typography>실시간 컨테이너 위치 및 상태 추적</Typography>
-          </Paper>
-        </Grid>
+        <Link to="/monitoring" style={{ textDecoration: 'none' }}>
+          <Grid item xs={12} md={6} lg={4}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240, cursor: 'pointer', // 마우스 커서 변경
+            '&:hover': { boxShadow: 6 }}}>
+              <Typography variant="h6" color="primary" gutterBottom>컨테이너 모니터링</Typography>
+              <Typography>실시간 컨테이너 위치 및 상태 추적</Typography>
+            </Paper>
+          </Grid>
+        </Link>
         {/* Card for Safety Detection */}
         <Grid item xs={12} md={6} lg={4}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>

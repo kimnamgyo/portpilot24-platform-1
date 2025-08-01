@@ -12,7 +12,7 @@ import PostDetailPage from './pages/PostDetailPage';
 import PostFormPage from './pages/PostFormPage';
 import DashboardPage from './pages/DashboardPage';
 import UserManagementPage from './pages/admin/UserManagementPage';
-
+import ContainerMonitoringPage from './pages/ContainerMonitoringPage';
 
 function Router() {
   return (
@@ -33,6 +33,7 @@ function Router() {
             <Route path="/posts/new" element={<PostFormPage />} />
             <Route path="/posts/:id" element={<PostDetailPage />} />
             <Route path="/posts/:id/edit" element={<PostFormPage />} />
+            <Route path="/monitoring" element={<ContainerMonitoringPage />} />
           </Route>
 
           {/* 관리자만 접근 가능한 페이지 */}
