@@ -3,13 +3,22 @@ from fastapi.responses import StreamingResponse, HTMLResponse, RedirectResponse
 from ultralytics import YOLO
 import cv2
 import os
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-model = YOLO(r"C:\Users\User\portpilot24-platform\yolo\models\best.pt")
+model = YOLO(r"C:\Users\User\portpilot24-platform-1\yolo\model\best.pt")
 
 video_path_global = None  # 추론할 영상 경로를 저장하는 전역 변수
 
@@ -17,7 +26,7 @@ video_path_global = None  # 추론할 영상 경로를 저장하는 전역 변�
 def form():
     return HTMLResponse(content="""
         <html>
-        <head><title>YOLOv8 영상 업로드</title></head>
+        <head><title>YOLO 영상 업로드</title></head>
         <body>
             <h2>YOLOv8 영상 업로드</h2>
             <form action="/upload" enctype="multipart/form-data" method="post">
@@ -49,18 +58,25 @@ def video_stream():
 
         while True:
             ret, frame = cap.read()
-            if not ret:
+            if not ret or frame is None:
                 break
 
             results = model.predict(source=frame, stream=False, verbose=False)
+
+            if not results or results[0] is None:
+                continue
+
             annotated = results[0].plot()
+            if annotated is None or annotated.size == 0:
+                continue
 
             _, buffer = cv2.imencode(".jpg", annotated)
             frame_bytes = buffer.tobytes()
 
             yield (b"--frame\r\n"
-                   b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n")
+                b"Content-Type: image/jpeg\r\n\r\n" + frame_bytes + b"\r\n")
 
         cap.release()
+
 
     return StreamingResponse(generate_frames(), media_type="multipart/x-mixed-replace; boundary=frame")

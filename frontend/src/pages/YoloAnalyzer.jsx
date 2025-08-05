@@ -1,39 +1,42 @@
-import React, { useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 
-const YoloAnalyzer = () => {
+function YoloAnalyzer() {
   const [videoFile, setVideoFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [streamReady, setStreamReady] = useState(false);
 
-  const handleFileChange = (e) => {
-    setVideoFile(e.target.files[0]);
-  };
-
-  const handleUpload = async (e) => {
-    e.preventDefault();
+  const handleUpload = async () => {
     if (!videoFile) return;
 
     const formData = new FormData();
     formData.append("file", videoFile);
 
-    try {
-      await axios.post("http://localhost:8000/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      setStreamReady(true); // 업로드 성공 시 스트리밍 준비
-    } catch (err) {
-      console.error("Upload failed:", err);
-    }
+    setLoading(true);
+    setStreamReady(false);
+
+    await fetch("http://localhost:8000/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    // YOLO 백엔드는 업로드 후 바로 /stream 으로 리다이렉트하니까,
+    // 클라이언트도 바로 /stream을 보여주면 돼
+    setLoading(false);
+    setStreamReady(true);
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>YOLOv8 영상 분석</h2>
+    <div className="p-4">
+      <input
+        type="file"
+        accept="video/mp4"
+        onChange={(e) => setVideoFile(e.target.files[0])}
+      />
+      <button onClick={handleUpload} className="mt-2 p-2 bg-blue-500 text-white">
+        분석 시작
+      </button>
 
-      <form onSubmit={handleUpload}>
-        <input type="file" accept="video/mp4" onChange={handleFileChange} />
-        <button type="submit">업로드 및 분석 시작</button>
-      </form>
+      {loading && <p className="mt-4 text-blue-600">분석 중입니다...</p>}
 
       {streamReady && (
         <div style={{ marginTop: "2rem" }}>
@@ -41,12 +44,18 @@ const YoloAnalyzer = () => {
           <img
             src="http://localhost:8000/stream"
             alt="YOLO Stream"
-            style={{ border: "1px solid #ccc", width: "640px" }}
+              style={{
+                width: "100%",
+                maxWidth: "960px",
+                border: "1px solid #ccc",
+                display: "block",
+                margin: "0 auto",
+              }}
           />
         </div>
       )}
     </div>
   );
-};
+}
 
 export default YoloAnalyzer;

@@ -13,6 +13,7 @@ import PostFormPage from './pages/PostFormPage';
 import DashboardPage from './pages/DashboardPage';
 import UserManagementPage from './pages/admin/UserManagementPage';
 import ContainerMonitoringPage from './pages/ContainerMonitoringPage';
+import YoloAnalyzer from './pages/YoloAnalyzer';
 
 function Router() {
   return (
@@ -34,6 +35,7 @@ function Router() {
             <Route path="/posts/:id" element={<PostDetailPage />} />
             <Route path="/posts/:id/edit" element={<PostFormPage />} />
             <Route path="/monitoring" element={<ContainerMonitoringPage />} />
+            <Route path="/analyzer" element={<YoloAnalyzer />} />
           </Route>
 
           {/* 관리자만 접근 가능한 페이지 */}
