@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function YoloAnalyzer() {
   const [videoFile, setVideoFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [streamReady, setStreamReady] = useState(false);
+  const [unprotectedCount, setUnprotectedCount] = useState(null);  // ✅ 단일 수치 상태
 
   const handleUpload = async () => {
     if (!videoFile) return;
@@ -19,11 +20,29 @@ function YoloAnalyzer() {
       body: formData,
     });
 
-    // YOLO 백엔드는 업로드 후 바로 /stream 으로 리다이렉트하니까,
-    // 클라이언트도 바로 /stream을 보여주면 돼
     setLoading(false);
     setStreamReady(true);
   };
+
+  useEffect(() => {
+    let intervalId;
+
+    if (streamReady) {
+      intervalId = setInterval(async () => {
+        try {
+          const res = await fetch("http://localhost:8000/yolo/status");
+          const data = await res.json();
+          setUnprotectedCount(data.unprotected_person);  // ✅ 단일 필드만 추출
+        } catch (err) {
+          console.error("상태 업데이트 실패:", err);
+        }
+      }, 3000);
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [streamReady]);
 
   return (
     <div className="p-4">
@@ -44,14 +63,26 @@ function YoloAnalyzer() {
           <img
             src="http://localhost:8000/stream"
             alt="YOLO Stream"
-              style={{
-                width: "100%",
-                maxWidth: "960px",
-                border: "1px solid #ccc",
-                display: "block",
-                margin: "0 auto",
-              }}
+            style={{
+              width: "100%",
+              maxWidth: "960px",
+              border: "1px solid #ccc",
+              display: "block",
+              margin: "0 auto",
+            }}
           />
+
+          {/* ✅ 안전보호구 미착용자 수 표시 */}
+          <div className="mt-4 text-center">
+            <h4 className="text-lg font-semibold">🚨 보호구 미착용자 수</h4>
+            {unprotectedCount === null ? (
+              <p>감지 중입니다...</p>
+            ) : (
+              <p className="text-2xl font-bold text-red-600">
+                {unprotectedCount}명
+              </p>
+            )}
+          </div>
         </div>
       )}
     </div>
