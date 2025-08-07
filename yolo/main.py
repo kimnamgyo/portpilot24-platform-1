@@ -43,9 +43,8 @@ def letterbox_image(image, desired_size=(960, 540)):
 # 최근 30프레임의 미착용자 수 저장
 unprotected_count_deque = deque(maxlen=30)
 
-# ------------------------------
-# 📌 유틸 함수: IoU 계산
-# ------------------------------
+
+# 유틸 함수: IoU 계산
 def iou(box1, box2):
     x1, y1, x2, y2 = box1.xyxy[0]
     x1g, y1g, x2g, y2g = box2.xyxy[0]
@@ -68,15 +67,18 @@ def iou(box1, box2):
         return 0.0
     return inter_area / union_area
 
-# ------------------------------
-# 🟦 업로드 및 분석
-# ------------------------------
+
+# 업로드 및 분석
 @app.get("/")
 def form():
     return HTMLResponse(content="""
-        <html>
-        <head><title>YOLO 영상 업로드</title></head>
-        <body>
+        <!DOCTYPE html>
+        <html lang="ko">
+        <head>
+            <meta charset="UTF-8">
+            <title>YOLO 영상 업로드</title>
+        </head>
+        <body style="margin: 20px; font-family: sans-serif;">
             <h2>YOLOv8 영상 업로드</h2>
             <form action="/upload" enctype="multipart/form-data" method="post">
                 <input name="file" type="file" accept="video/mp4"/>
@@ -97,9 +99,8 @@ async def upload(file: UploadFile = File(...)):
     video_path_global = filename
     return RedirectResponse(url="/stream", status_code=303)
 
-# ------------------------------
-# 🟩 스트리밍 + 미착용자 감지
-# ------------------------------
+
+# 스트리밍 + 미착용자 감지
 @app.get("/stream")
 def video_stream():
     if not video_path_global or not os.path.exists(video_path_global):
@@ -162,7 +163,7 @@ def video_stream():
     return StreamingResponse(generate_frames(), media_type="multipart/x-mixed-replace; boundary=frame")
 
 
-# 🟨 감지 상태 API (프론트에 표시)
+# 감지 상태 API (프론트에 표시)
 @app.get("/yolo/status")
 def detection_status():
     if not unprotected_count_deque:

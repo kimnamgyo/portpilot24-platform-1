@@ -4,7 +4,7 @@ function YoloAnalyzer() {
   const [videoFile, setVideoFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [streamReady, setStreamReady] = useState(false);
-  const [unprotectedCount, setUnprotectedCount] = useState(null);  // ✅ 단일 수치 상태
+  const [unprotectedCount, setUnprotectedCount] = useState(null);
 
   const handleUpload = async () => {
     if (!videoFile) return;
@@ -32,7 +32,7 @@ function YoloAnalyzer() {
         try {
           const res = await fetch("http://localhost:8000/yolo/status");
           const data = await res.json();
-          setUnprotectedCount(data.unprotected_person);  // ✅ 단일 필드만 추출
+          setUnprotectedCount(data.unprotected_person);
         } catch (err) {
           console.error("상태 업데이트 실패:", err);
         }
@@ -59,7 +59,7 @@ function YoloAnalyzer() {
 
       {streamReady && (
         <div style={{ marginTop: "2rem" }}>
-          <h3>🔍 분석 결과 스트리밍</h3>
+          <h3>분석 결과 스트리밍</h3>
           <img
             src="http://localhost:8000/stream"
             alt="YOLO Stream"
@@ -72,9 +72,9 @@ function YoloAnalyzer() {
             }}
           />
 
-          {/* ✅ 안전보호구 미착용자 수 표시 */}
+          {/* 안전보호구 미착용자 수 표시 */}
           <div className="mt-4 text-center">
-            <h4 className="text-lg font-semibold">🚨 보호구 미착용자 수</h4>
+            <h4 className="text-lg font-semibold">보호구 미착용자 수</h4>
             {unprotectedCount === null ? (
               <p>감지 중입니다...</p>
             ) : (
