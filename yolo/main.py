@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import StreamingResponse, HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
 from ultralytics import YOLO
 from collections import deque
 import cv2
@@ -19,7 +20,8 @@ app.add_middleware(
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-model = YOLO(r"C:\Users\User\portpilot24-platform-1\yolo\model\best.pt")
+model_path = Path(__file__).parent / "model" / "best.pt"
+model = YOLO(str(model_path))
 video_path_global = None
 
 def letterbox_image(image, desired_size=(960, 540)):
